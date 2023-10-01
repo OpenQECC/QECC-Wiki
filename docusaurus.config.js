@@ -13,7 +13,7 @@
 const config = {
   title: 'My Site',
   tagline: 'The tagline of my site',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/logo.png',
 
   // Set the production url of your site here
   url: 'https://your-docusaurus-test-site.com',
@@ -23,8 +23,8 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'Krastanov Lab', // Usually your GitHub org/user name.
+  projectName: 'QECC - Wiki', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -35,19 +35,21 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
+          routeBasePath: '/',
+          path: 'docs',
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/Benzillaist/QECC-Wiki',
         },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-        },
+        // blog: {
+        //   showReadingTime: true,
+        //   // Please change this to your repo.
+        //   // Remove this to remove the "edit this page" links.
+        //   editUrl:
+        //     'https://github.com/Benzillaist/QECC-Wiki',
+        // },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
@@ -60,17 +62,17 @@ const config = {
     ({
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
-        title: 'My Meta Project',
+        title: 'QECC-Wiki',
         logo: {
-          alt: 'My Meta Project Logo',
-          src: 'img/logo.svg',
+          alt: 'QECC-Wiki Logo',
+          src: 'img/logo.png',
         },
         items: [
           {
-            type: 'docSidebar',
-            sidebarId: 'tutorialSidebar',
+            type: 'docSidebar',  // docSidebar
             position: 'left',
-            label: 'Tutorial',
+            sidebarId: 'api', // foldername
+            label: 'API',     // navbar title
           },
           {to: 'blog', label: 'Blog', position: 'left'},
           // Please keep GitHub link to the right for consistency.
@@ -151,14 +153,14 @@ const config = {
           },
         ],
         logo: {
-          alt: 'Meta Open Source Logo',
+          alt: 'QECC Open Source Logo',
           // This default includes a positive & negative version, allowing for
           // appropriate use depending on your site's style.
-          src: '/img/meta_opensource_logo_negative.svg',
+          src: '/img/qecc-opensource.png',
           href: 'https://opensource.fb.com',
         },
         // Please do not remove the credits, help to publicize Docusaurus :)
-        copyright: `Copyright © ${new Date().getFullYear()} Meta Platforms, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Krastanov Lab, University of Massachusetts Amherst.`,
       },
     }),
 };
