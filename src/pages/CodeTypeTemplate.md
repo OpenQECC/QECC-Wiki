@@ -1,13 +1,13 @@
 # [Code Name]
 
-## Code Description 
+## Code Description
 
 - List of descriptive code attributes
 - Similar to [errorcorrectionzoo](https://errorcorrectionzoo.org/)
 
 ## Code Example
 [Insert image of small example of code]
-[File Name](https://Benzillaist.github.com/link_to_code)
+[File Name](https://github.com/Benzillaist/QECC-Wiki/link_to_code)
 
 ### Code tests
 
@@ -38,11 +38,11 @@ Graphs showing performance of generated code, asuming code is smallish (like N <
 
 Here are codes that are similar in nature to the [code name]
 
-| Code | Description | 
+| Code | Description |
 | -----------------|----------------|
-| Similar code #1 | Simiular code brief description #1 |
-| Similar code #2 | Simiular code brief description #2 |
-| Similar code #3 | Simiular code brief description #3 |
+| Similar code #1 | Similar code brief description #1 |
+| Similar code #2 | Similar code brief description #2 |
+| Similar code #3 | Similar code brief description #3 |
 
 ## Code References
 

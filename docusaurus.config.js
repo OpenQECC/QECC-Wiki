@@ -72,7 +72,7 @@ const config = {
             type: 'docSidebar',  // docSidebar
             position: 'left',
             sidebarId: 'api', // foldername
-            label: 'API',     // navbar title
+            label: 'Codes',     // navbar title
           },
           {to: 'blog', label: 'Blog', position: 'left'},
           // Please keep GitHub link to the right for consistency.
