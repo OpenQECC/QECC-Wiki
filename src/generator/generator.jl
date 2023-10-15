@@ -1,50 +1,115 @@
 using QuantumClifford
-using .Citation
-# Define the function that contains the main logic
-function getCodeName(name)
-    return name
+
+CODE_NAME = "<enter your code name here>"
+CONFIG_PATH = "codelists/$CODE_NAME.jl"
+include(CONFIG_PATH)
+
+# the `code` variable is now imported
+
+function getCodeName()
+    n = code["name"]
+    return  "# $n"
 end
 
-function describe(code)
-    return description
+function describe()
+    return code["description"]
 end
 
-function example end
-
-function benchmark end
-
-function generator end
-
-function getSimilar end
-
-function references()
-    FILE_PATH = "./bib.txt"
+function example()
     result = String[]
     try
-        # Open the file for reading
-        open(FILE_PATH, "r") do file
-            for line in eachline(file)
-                # Remove leading and trailing whitespace
-                line = strip(line)
-
-                # Process the line using format_chicago_citation
-                formatted_citation = format_chicago_citation(line)
-                result.append(formatted_citation)
-                println(formatted_citation)
-            end
+        # stab = StringToStab()
+        if not code["replot"]
+            
+        else
+            # stab = StringToStab(code["example"]["codestring"])
+            circuit, anc, - = naive_syndrome_circuit()
         end
+        # if parity check matrix image already exists
+        #   display image
+        # else
+        #   generate image
+        #   display image
     catch e
-        error("Error reading the file: $e")
+        error("Error parsing config object: $e")
     end
     return '\n'.join(result)
+end #  Displays example code
+
+function benchmark()
+    result = ['Benchmarking Results']
+    try
+        if code['replot']
+            
+        end
+            
+        # if plots already exists
+        #   display plots
+        # else
+        #   generate plots
+        #   display plots
+        #   save plots with the following format '$CODE_NAME' + '$plot_type.png'
+    catch e
+        error("Error parsing config object: $e")
+    end
+    return '\n'.join(result)
+end # Benchmarks example code
+
+function generator()
+    result = String[]
+    try
+        
+    catch e
+        error("Error parsing config object: $e")
+    end
+    return '\n'.join(result)
+end # For future: link to interactive generator page
+
+function getSimilar()
+    result = String[]
+    try
+        s = code["similar"]
+        for i in s
+            n = "###" + i["name"]
+            l = i["link"]
+            d = i["desc"]
+            result.append("- **[$n]($l)**: $d")
+        end
+    catch e
+        error("Error parsing config object: $e")
+    end
+    return 'Similar Codes \n' + '\n'.join(result)
+end # Formats pages for similar codes
+
+function references()
+    try
+        
+        cites = code["citation"]
+        section = ["References"]
+        for cite in cites
+            author = '' if 'author' not in cite else cite['author']
+            title = cite['title']
+            journal = '' if 'journal' not in cite else cite['journal']
+            doi = '' if 'doi' not in cite else cite['journal']
+            citation = [, author, title, journal]
+            if doi
+                citation.append(["[DOI](https://doi.org/$doi)"])
+            end
+            section.append(','.join(citation))
+        end
+        
+        return '\n'.join(section)
+    catch e
+        error("Error parsing references: $e")
+    
 end
 
 function main()
     # Define the string you want to write to the .md file
-    markdown_content = """\n\n\n""".join(getCodeName(name), describe(code), example(), benchmark(), generator(), getSimilar(), references())
+    markdown_content = """\n\n##""".join(getCodeName(), describe(), example(), benchmark(), generator(), getSimilar(), references())
 
     # Specify the file path where you want to save the .md file
-    file_path = "example.md"
+    file_path = "$CODE_NAME.md"
 
     # Open the file in write mode and write the content to it
     open(file_path, "w") do file
