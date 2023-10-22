@@ -1,10 +1,20 @@
 code = Dict(
-    "name"=>"<name of code>",
-    "desc" => [
-        
+    "name"=>"{Code Name}",
+    "description" => [
+        "This is a test code",
+        "Description 1",
+        "Description 2",
+        "Description 3"
     ],
     "example" => Dict(
-        "codestring"=>"<Insert parity check matrix string here>"
+        "codestring"=>"XXI
+        IXX"
+        # "codestring"=>"___XXXX
+        # _XX__XX
+        # X_X_X_X
+        # ___ZZZZ
+        # _ZZ__ZZ
+        # Z_Z_Z_Z"
         # leaving room for future example additions
     ),
     "similar" => [
@@ -13,7 +23,11 @@ code = Dict(
             "link"=>"sample link",
             "desc"=>"short desc"
         ),
-        Dict()
+        Dict(
+            "name"=>"Surface Code",
+            "link"=>"https://www.nature.com/articles/s41586-022-05434-1",
+            "desc"=>"This is a surface code hehe"
+        ),
     ],
     "citation" => [
         Dict(
