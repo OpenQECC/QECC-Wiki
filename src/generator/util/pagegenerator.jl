@@ -6,7 +6,7 @@ export compile
  using QuantumClifford.ECC
  using Quantikz
  using CairoMakie
- 
+
  include("./converter.jl")
  using .converter
 
@@ -26,14 +26,14 @@ export compile
 
  CONFIG_PATH = "../codelists/$CODE_NAME.jl"
  include(CONFIG_PATH)
- 
+
  # the `code` variable is now imported
- 
+
  function getCodeName()
      n = code["name"]
      return  "# $n"
  end
- 
+
  function describe()
      try
         result = vcat(["Description"], code["description"])
@@ -43,7 +43,7 @@ export compile
      end
      return ""
  end
- 
+
  function example()
      result = ["Example"]
      try
@@ -52,7 +52,7 @@ export compile
          if code["replot"]
             # generate circuit img
             circuit, anc, - = naive_syndrome_circuit(tab);
-            
+
             # save img
             image_dir = string(@__DIR__, "\\..\\..\\..\\docs\\codes\\images\\codeplots\\$CODE_NAME-codeplot.png")
             savecircuit(circuit, image_dir)
@@ -66,13 +66,13 @@ export compile
          push!(result, "### Syndrome Circuit:")
 
          # Link image in markdown file
-         push!(result, "![$CODE_NAME Syndrome Circuit](images\\codeplots\\$CODE_NAME-codeplot.png)")
+         push!(result, "![$CODE_NAME Syndrome Circuit](../../src/pages/images/codeplots/$CODE_NAME-codeplot.png)")
      catch e
          error("Error parsing config object: $e")
      end
      return join(result, "\n")
  end #  Displays example code
- 
+
  function benchmark()
      result = ["Benchmarking Results"]
     #  try
@@ -119,11 +119,11 @@ export compile
     #  end
      return join(result, "\n")
  end # Benchmarks example code
- 
+
  function generator()
      result = String[]
      try
-         
+
      catch e
          error("Error parsing config object: $e")
      end
@@ -154,9 +154,9 @@ export compile
      end
      return "Similar Codes \n" * join(result, "\n")
  end # Formats pages for similar codes
- 
+
  function references()
-     try 
+     try
          cites = code["citation"]
          section = ["References"]
          for cite in cites
@@ -171,13 +171,13 @@ export compile
              end
              push!(section, join(citation, ", "))
          end
-         
+
          return join(section, "\n")
      catch e
          error("Error parsing references: $e")
      end
  end
- 
+
  function main()
      # Define the string you want to write to the .md file
      markdown_content = join([getCodeName(), describe(), example(), benchmark(), generator(), QASMdownload(), getSimilar(), references()], """\n\n## """)
@@ -189,10 +189,10 @@ export compile
      open(file_path, "w") do file
          write(file, markdown_content)
      end
- 
+
      println("Markdown content has been written to $file_path.")
  end
- 
+
  # Check if this script is the main entry point
  if !isdefined(Main, :__init__)
      main()  # Call the main function if this script is the main entry point

@@ -77,7 +77,7 @@ const config = {
           {to: 'blog', label: 'Blog', position: 'left'},
           // Please keep GitHub link to the right for consistency.
           {
-            href: 'https://github.com/facebook/docusaurus',
+            href: 'https://github.com/Benzillaist/QECC-Wiki',
             label: 'GitHub',
             position: 'right',
           },
@@ -87,15 +87,15 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: 'Learn',
+            title: 'Docs',
             items: [
               {
-                label: 'Style Guide',
-                to: 'docs/',
+                label: 'Get Started',
+                to: '/',
               },
               {
-                label: 'Second Doc',
-                to: 'docs/doc2',
+                label: 'Style Guide',
+                to: 'welcome/Add%20new%20code/create-a-page',
               },
             ],
           },
@@ -103,54 +103,25 @@ const config = {
             title: 'Community',
             items: [
               {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+                label: 'Stack Exchange',
+                to: 'https://quantumcomputing.stackexchange.com/',
               },
               {
-                label: 'Twitter',
-                href: 'https://twitter.com/docusaurus',
-              },
-              {
-                label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
+                label: 'Contributor Covenant',
+                to: 'https://www.contributor-covenant.org/version/1/4/code-of-conduct/',
               },
             ],
           },
           {
-            title: 'More',
+            title: 'Social',
             items: [
-              {
-                label: 'Blog',
-                to: 'blog',
-              },
               {
                 label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
+                to: 'https://github.com/Benzillaist/QECC-Wiki',
               },
             ],
-          },
-          {
-            title: 'Legal',
-            // Please do not remove the privacy and terms, it's a legal requirement.
-            items: [
-              {
-                label: 'Privacy',
-                href: 'https://opensource.fb.com/legal/privacy/',
-              },
-              {
-                label: 'Terms',
-                href: 'https://opensource.fb.com/legal/terms/',
-              },
-              {
-                label: 'Data Policy',
-                href: 'https://opensource.fb.com/legal/data-policy/',
-              },
-              {
-                label: 'Cookie Policy',
-                href: 'https://opensource.fb.com/legal/cookie-policy/',
-              },
-            ],
-          },
+          }
+
         ],
         logo: {
           alt: 'QECC Open Source Logo',
