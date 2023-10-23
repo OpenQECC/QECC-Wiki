@@ -16,14 +16,14 @@ ___XXXXXX
 - Number of qubits: N = 9
 - Number of encoded bits: k = 1
 ### Syndrome Circuit:
-![Shor-9 Syndrome Circuit](images\codeplots\Shor-9-codeplot.png)
+![Shor-9 Syndrome Circuit](../../src/pages/images/codeplots/Shor-9-codeplot.png)
 
 ## Benchmarking Results
 This code was tested with the following decoders:
-**Lookup table:** Ran in 1.866s
+**Lookup table:** Ran in 0.3843s
 ![Shor-9 Truth Table PP](images\performanceplots\Shor-9-lookuptable.png)
-**Belief decoder:** Ran in 42.28s
-![Shor-9 Belief Decoder PP](images\performanceplots\Shor-9-belief.png)
+**Belief decoder:** Ran in 12.0s
+![Shor-9 Belief Decoder PP](images\performanceplots\Shor-9-beliefa.png)
 
 ## 
 

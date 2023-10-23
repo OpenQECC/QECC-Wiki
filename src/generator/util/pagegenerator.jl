@@ -22,7 +22,7 @@ export compile
  create_lookup_table = QECC_Decoders.create_lookup_table
  plot_code_performance = QECC_Plotters.plot_code_performance
  
- CODE_NAME = "Bicycle"
+ CODE_NAME = "example"
 
  CONFIG_PATH = "../codelists/$CODE_NAME.jl"
  include(CONFIG_PATH)
@@ -105,7 +105,7 @@ export compile
          push!(result, "**Lookup table:** Ran in "*string(times[1])*"s")
          push!(result, "![$CODE_NAME Truth Table PP](images\\performanceplots\\$CODE_NAME-lookuptable.png)")
          push!(result, "**Belief decoder:** Ran in "*string(times[2])*"s")
-         push!(result, "![$CODE_NAME Belief Decoder PP](images\\performanceplots\\$CODE_NAME-belief.png)")
+         push!(result, "![$CODE_NAME Belief Decoder PP](images\\performanceplots\\$CODE_NAME-beliefa.png)")
         
 
          # if plots already exists
