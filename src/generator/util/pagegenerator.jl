@@ -12,6 +12,15 @@ export compile
 
  include("./pfcircuit_eval.jl")
  using .PauliFrame_Eval
+
+ include("QECC_plotters.jl")
+ using .QECC_Plotters
+
+ include("QECC_decoders.jl")
+ using .QECC_Decoders
+
+ create_lookup_table = QECC_Decoders.create_lookup_table
+ plot_code_performance = QECC_Plotters.plot_code_performance
  
  CODE_NAME = "example"
 
@@ -45,11 +54,13 @@ export compile
             circuit, anc, - = naive_syndrome_circuit(tab);
             
             # save img
-            image_dir = string(@__DIR__, "\\..\\..\\pages\\images\\codeplots\\$CODE_NAME-codeplot.png")
+            image_dir = string(@__DIR__, "\\..\\..\\..\\docs\\codes\\images\\codeplots\\$CODE_NAME-codeplot.png")
             savecircuit(circuit, image_dir)
          end
          n = code_n(stab)
          k = code_k(stab)
+         push!(result, "Code Tableau:")
+         push!(result, code["example"]["codestring"])
          push!(result, "- Number of qubits: N = $n")
          push!(result, "- Number of encoded bits: k = $k")
          push!(result, "### Syndrome Circuit:")
@@ -65,22 +76,38 @@ export compile
  function benchmark()
      result = ["Benchmarking Results"]
     #  try
+         image_dir = string(@__DIR__, "\\..\\..\\..\\docs\\codes\\images\\performanceplots\\")
+         tab = stabilizerStringToTableau(code["example"]["codestring"])
+         stab = Stabilizer(tab)
+         times = []
          if code["replot"]
-            println(code["example"]["codestring"])
+            image_dir = string(@__DIR__, "\\..\\..\\..\\docs\\codes\\images\\performanceplots\\")
             tab = stabilizerStringToTableau(code["example"]["codestring"])
             stab = Stabilizer(tab)
 
             # Truth table decoder
-
+            lookup_table, lt_time1, _ = @timed create_lookup_table(stab)
+            error_rates = code["benchmark"]["error_rates"]
+            a = [p for p in error_rates]
+            post_ec_error_rates, lt_time2, _ = @timed [evaluate_code_decoder(stab, lookup_table, p) for p in error_rates]
+            lt_time = round(lt_time1 + lt_time2, sigdigits=4)
+            push!(times, lt_time)
+            lt_plot = plot_code_performance(error_rates, post_ec_error_rates, title="$CODE_NAME: Lookup table @$lt_time"*"s")
+            save(image_dir * "$CODE_NAME-lookuptable.png", lt_plot)
 
             # Krishna decoder
-            f_x_Steane, f_z_Steane, f_a_Steane = pf_encoding_plot(stab, "Steane 7")
-            image_dir = string(@__DIR__, "\\..\\..\\pages\\images\\performanceplots\\")
-            save(image_dir * "$CODE_NAME-perfplotx.png", f_x_Steane)
-            save(image_dir * "$CODE_NAME-perfplotz.png", f_z_Steane)
-            save(image_dir * "$CODE_NAME-perfplota.png", f_a_Steane)
+            bp_x_plot, bp_z_plot, bp_a_plot, bp_time = pf_encoding_plot(stab, CODE_NAME)
+            push!(times, bp_time)
+            save(image_dir * "$CODE_NAME-beliefx.png", bp_x_plot)
+            save(image_dir * "$CODE_NAME-beliefz.png", bp_z_plot)
+            save(image_dir * "$CODE_NAME-beliefa.png", bp_a_plot)
          end
-             
+         push!(result, "This code was tested with the following decoders:")
+         push!(result, "**Lookup table:** Ran in "*string(times[1])*"s")
+         push!(result, "![$CODE_NAME Truth Table PP](images\\performanceplots\\$CODE_NAME-lookuptable.png)")
+         push!(result, "**Belief decoder:** Ran in "*string(times[2])*"s")
+         push!(result, "![$CODE_NAME Belief Decoder PP](images\\performanceplots\\$CODE_NAME-belief.png)")
+        
 
          # if plots already exists
          #   display plots
@@ -148,7 +175,7 @@ export compile
      markdown_content = join([getCodeName(), describe(), example(), benchmark(), generator(), getSimilar(), references()], """\n\n## """)
  
      # Specify the file path where you want to save the .md file
-     file_path = string(@__DIR__, "\\..\\..\\pages\\$CODE_NAME.md")
+     file_path = string(@__DIR__, "\\..\\..\\..\\docs\\codes\\$CODE_NAME.md")
  
      # Open the file in write mode and write the content to it
      open(file_path, "w") do file

@@ -7,16 +7,19 @@ code = Dict(
         "Description 3"
     ],
     "example" => Dict(
-        "codestring"=>"XXI
-        IXX"
-        # "codestring"=>"___XXXX
-        # _XX__XX
-        # X_X_X_X
-        # ___ZZZZ
-        # _ZZ__ZZ
-        # Z_Z_Z_Z"
+        # "codestring"=>"XXI
+        # IXX"
+        "codestring"=>"___XXXX
+        _XX__XX
+        X_X_X_X
+        ___ZZZZ
+        _ZZ__ZZ
+        Z_Z_Z_Z"
         # leaving room for future example additions
     ),
+    "benchmark" => Dict(
+        "error_rates"=>0.000:0.005:0.09,
+    ),  
     "similar" => [
         Dict(
             "name"=>"sample name",
