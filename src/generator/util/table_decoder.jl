@@ -31,9 +31,3 @@ function decode_using_table_decoder(syndrome, lookup_table)
 end
 
 lookup_table_three = create_lookup_table_3_errors(H)
-
-# Sample syndrome
-measured_syndrome = [1, 0, 0]
-
-decoded_error = decode_using_lookup_table(measured_syndrome, lookup_table_three)
-println(decoded_error)
