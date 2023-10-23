@@ -22,11 +22,11 @@ Z_Z_Z_Z
 - Number of qubits: N = 7
 - Number of encoded bits: k = 1
 ### Syndrome Circuit:
-![example Syndrome Circuit](images\codeplots\example-codeplot.png)
+![example Syndrome Circuit](images/codeplots/example-codeplot.png)
 
 ## Benchmarking Results
 This code was tested with the following decoders:
-**Lookup table:** Ran in 0.3957s
+**Lookup table:** Ran in 0.3921s
 ![example Truth Table PP](images\performanceplots\example-lookuptable.png)
 
 **Belief decoder:** Ran in 7.49s
@@ -34,6 +34,10 @@ This code was tested with the following decoders:
 ![example Belief Decoder PP](images\performanceplots\example-beliefa.png)
 
 ##
+##
+
+## QASM Downloads
+[QASM Encoding Circuit](QASMDownloads\\example-encodingCircuit.qasm)"
 
 ## Similar Codes
 - **[sample name](sample link)**: short desc

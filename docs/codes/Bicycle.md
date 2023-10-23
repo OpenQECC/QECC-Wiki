@@ -17,16 +17,15 @@ Z__ZZZ_
 - Number of qubits: N = 7
 - Number of encoded bits: k = 3
 ### Syndrome Circuit:
-![Bicycle Syndrome Circuit](images\codeplots\Bicycle-codeplot.png)
+![Bicycle Syndrome Circuit](images/codeplots/Bicycle-codeplot.png)
 
 ## Benchmarking Results
 This code was tested with the following decoders:
-**Lookup table:** Ran in 0.4064s
+**Lookup table:** Ran in 0.4039s
 ![Bicycle Truth Table PP](images\performanceplots\Bicycle-lookuptable.png)
-
-**Belief decoder:** Ran in 15.42s
-
+**Belief decoder:** Ran in 13.44s
 ![Bicycle Belief Decoder PP](images\performanceplots\Bicycle-beliefa.png)
+
 
 ##
 

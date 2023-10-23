@@ -23,7 +23,7 @@ ___XXXXXX
 
 ## Benchmarking Results
 This code was tested with the following decoders:
-**Lookup table:** Ran in 1.866s
+**Lookup table:** Ran in 0.3843s
 ![Shor-9 Truth Table PP](images\performanceplots\Shor-9-lookuptable.png)
 
 **Belief decoder:** Ran in 42.28s
