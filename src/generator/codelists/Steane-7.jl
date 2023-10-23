@@ -37,7 +37,7 @@ code = Dict(
     "citation" => [
         Dict(
             "author" => "Andrew Steane",
-            "doi" => "https://doi.org/10.1098/rspa.1996.0136",
+            "doi" => "10.1098/rspa.1996.0136",
             "journal" => "Proc.Roy.Soc.Lond. A452 (1996) 2551",
             "title" => "Multiple Particle Interference and Quantum Error Correction",
         ),

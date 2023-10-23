@@ -33,7 +33,7 @@ code = Dict(
     "citation" => [
         Dict(
             "author" => "David J.C. MacKay, Graeme Mitchison, Paul L. McFadden",
-            "doi" => "https://ieeexplore.ieee.org/document/1337106",
+            "doi" => "10.1109/TIT.2004.834737",
             "journal" => "IEEE Transactions on Information Theory, Vol. 50, No. 10, p. 2315 (2004)",
             "title" => "Sparse Graph Codes for Quantum Error-Correction", 
         ),

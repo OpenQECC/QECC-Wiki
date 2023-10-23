@@ -22,7 +22,7 @@ export compile
  create_lookup_table = QECC_Decoders.create_lookup_table
  plot_code_performance = QECC_Plotters.plot_code_performance
  
- CODE_NAME = "Steane-7"
+ CODE_NAME = "Bicycle"
 
  CONFIG_PATH = "../codelists/$CODE_NAME.jl"
  include(CONFIG_PATH)

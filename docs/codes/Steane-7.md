@@ -19,9 +19,9 @@ Z_Z_Z_Z
 
 ## Benchmarking Results
 This code was tested with the following decoders:
-**Lookup table:** Ran in 0.4369s
+**Lookup table:** Ran in 0.3927s
 ![Steane-7 Truth Table PP](images\performanceplots\Steane-7-lookuptable.png)
-**Belief decoder:** Ran in 7.355s
+**Belief decoder:** Ran in 7.398s
 ![Steane-7 Belief Decoder PP](images\performanceplots\Steane-7-belief.png)
 
 ## 
@@ -32,4 +32,4 @@ This code was tested with the following decoders:
 - **[Shor-9](https://math.mit.edu/~shor/papers/good-codes.pdf)**: Degenerate CSS code designed to account for parity errors
 
 ## References
-Andrew Steane, Multiple Particle Interference and Quantum Error Correction, Proc.Roy.Soc.Lond. A452 (1996) 2551, [DOI](https://doi.org/https://doi.org/10.1098/rspa.1996.0136)
+Andrew Steane, Multiple Particle Interference and Quantum Error Correction, Proc.Roy.Soc.Lond. A452 (1996) 2551, [DOI](https://doi.org/10.1098/rspa.1996.0136)

@@ -18,9 +18,9 @@ Z__ZZZ_
 
 ## Benchmarking Results
 This code was tested with the following decoders:
-**Lookup table:** Ran in 0.362s
+**Lookup table:** Ran in 0.4064s
 ![Bicycle Truth Table PP](images\performanceplots\Bicycle-lookuptable.png)
-**Belief decoder:** Ran in 13.78s
+**Belief decoder:** Ran in 15.42s
 ![Bicycle Belief Decoder PP](images\performanceplots\Bicycle-belief.png)
 
 ## 
@@ -31,4 +31,4 @@ This code was tested with the following decoders:
 - **[Unicycle Codes](https://arxiv.org/abs/quant-ph/0304161)**: Circulant code based on perfect difference sets
 
 ## References
-David J.C. MacKay, Graeme Mitchison, Paul L. McFadden, Sparse Graph Codes for Quantum Error-Correction, IEEE Transactions on Information Theory, Vol. 50, No. 10, p. 2315 (2004), [DOI](https://doi.org/https://ieeexplore.ieee.org/document/1337106)
+David J.C. MacKay, Graeme Mitchison, Paul L. McFadden, Sparse Graph Codes for Quantum Error-Correction, IEEE Transactions on Information Theory, Vol. 50, No. 10, p. 2315 (2004), [DOI](https://doi.org/10.1109/TIT.2004.834737)
