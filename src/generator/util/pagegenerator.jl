@@ -22,7 +22,7 @@ export compile
  create_lookup_table = QECC_Decoders.create_lookup_table
  plot_code_performance = QECC_Plotters.plot_code_performance
  
- CODE_NAME = "example"
+ CODE_NAME = "Steane-7"
 
  CONFIG_PATH = "../codelists/$CODE_NAME.jl"
  include(CONFIG_PATH)
@@ -88,7 +88,6 @@ export compile
             # Truth table decoder
             lookup_table, lt_time1, _ = @timed create_lookup_table(stab)
             error_rates = code["benchmark"]["error_rates"]
-            a = [p for p in error_rates]
             post_ec_error_rates, lt_time2, _ = @timed [evaluate_code_decoder(stab, lookup_table, p) for p in error_rates]
             lt_time = round(lt_time1 + lt_time2, sigdigits=4)
             push!(times, lt_time)
@@ -130,6 +129,14 @@ export compile
      end
      return join(result, "\n")
  end # For future: link to interactive generator page
+
+ function QASMdownload()
+    result = String["QASM Downloads"]
+    # generate QASM file
+    save_dir = string(@__DIR__, "\\..\\..\\..\\docs\\codes\\QASMDownloads\\")
+    push!(result, "[QASM Encoding Circuit]("*save_dir*CODE_NAME*"-encodingCircuit.qasm)")
+    return result
+ end
  
  function getSimilar()
      result = String[]
@@ -172,7 +179,7 @@ export compile
  
  function main()
      # Define the string you want to write to the .md file
-     markdown_content = join([getCodeName(), describe(), example(), benchmark(), generator(), getSimilar(), references()], """\n\n## """)
+     markdown_content = join([getCodeName(), describe(), example(), benchmark(), generator(), QASMdownload() getSimilar(), references()], """\n\n## """)
  
      # Specify the file path where you want to save the .md file
      file_path = string(@__DIR__, "\\..\\..\\..\\docs\\codes\\$CODE_NAME.md")

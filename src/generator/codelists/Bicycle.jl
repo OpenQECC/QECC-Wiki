@@ -1,7 +1,7 @@
 # Bicycle code
 
 code = Dict(
-    "name"=>"{Code Name}",
+    "name"=>"Bicycle",
     "description" => [
         "This is a test code",
         "Description 1",
@@ -9,17 +9,20 @@ code = Dict(
         "Description 3"
     ],
     "example" => Dict(
-        "codestring"=>"XX_X___X___X_X
-        _XX_X__XX___X_
-        __XX_X__XX___X
-        ___XX_XX_XX___
-        X___XX__X_XX__
-        _X___XX__X_XX_"
+        # "codestring"=>"XX_X___X___X_X
+        # _XX_X__XX___X_
+        # __XX_X__XX___X
+        # ___XX_XX_XX___
+        # X___XX__X_XX__
+        # _X___XX__X_XX_",
 
-        "parity_checks"=>"XX_XX_X
+        "codestring"=>"XX_XX_X
         X__XXX_
         ZZ_ZZ_Z
         Z__ZZZ_"
+    ),
+    "benchmark" => Dict(
+        "error_rates"=>0.000:0.005:0.09,
     ),
     "similar" => [
         Dict(
