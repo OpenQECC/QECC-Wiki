@@ -1,5 +1,5 @@
 code = Dict(
-    "name"=>"{Code Name}",
+    "name"=>"Example",
     "description" => [
         "This is a test code",
         "Description 1",
@@ -34,7 +34,7 @@ code = Dict(
             "author" => "Nathanan Tantivasadakarn and Ruben Verresen and Ashvin Vishwanath",
             "doi" => "10.1103/PhysRevLett.131.060405",
             "journal" => "Physical Review Letters",
-            "title" => "Shortest Route to Non-Abelian Topological Order on a Quantum Processor", 
+            "title" => "Shortest Route to Non-Abelian Topological Order on a Quantum Processor",
         ),
 
     ],
