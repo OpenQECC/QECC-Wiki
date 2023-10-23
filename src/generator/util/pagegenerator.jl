@@ -21,7 +21,7 @@ export compile
 
  create_lookup_table = QECC_Decoders.create_lookup_table
  plot_code_performance = QECC_Plotters.plot_code_performance
- 
+
  CODE_NAME = "Bicycle"
 
  CONFIG_PATH = "../codelists/$CODE_NAME.jl"
@@ -66,7 +66,7 @@ export compile
          push!(result, "### Syndrome Circuit:")
 
          # Link image in markdown file
-         push!(result, "![$CODE_NAME Syndrome Circuit](../../src/pages/images/codeplots/$CODE_NAME-codeplot.png)")
+         push!(result, "![$CODE_NAME Syndrome Circuit](images/codeplots/$CODE_NAME-codeplot.png)")
      catch e
          error("Error parsing config object: $e")
      end
@@ -106,7 +106,7 @@ export compile
          push!(result, "![$CODE_NAME Truth Table PP](images\\performanceplots\\$CODE_NAME-lookuptable.png)")
          push!(result, "**Belief decoder:** Ran in "*string(times[2])*"s")
          push!(result, "![$CODE_NAME Belief Decoder PP](images\\performanceplots\\$CODE_NAME-belief.png)")
-        
+
 
          # if plots already exists
          #   display plots
@@ -117,7 +117,7 @@ export compile
     #  catch e
         #  error("Error parsing config object: $e")
     #  end
-     return join(result, "\n")
+     return join(result, "\n\n")
  end # Benchmarks example code
 
  function generator()
@@ -131,12 +131,12 @@ export compile
  end # For future: link to interactive generator page
 
  function QASMdownload()
-    result = String["QASM Downloads"]
+    result = ["## QASM Downloads"]
     # generate QASM file
     save_dir = string(@__DIR__, "\\..\\..\\..\\docs\\codes\\QASMDownloads\\")
     generate_openQasm_file(code["example"]["codestring"], save_dir*CODE_NAME*"-encodingCircuit.qasm")
     push!(result, "[QASM Encoding Circuit](QASMDownloads\\"*CODE_NAME*"-encodingCircuit.qasm)")
-    return result
+    return '\n'.join(result)
  end
 
  function getSimilar()
@@ -181,10 +181,10 @@ export compile
  function main()
      # Define the string you want to write to the .md file
      markdown_content = join([getCodeName(), describe(), example(), benchmark(), generator(), QASMdownload(), getSimilar(), references()], """\n\n## """)
- 
+
      # Specify the file path where you want to save the .md file
      file_path = string(@__DIR__, "\\..\\..\\..\\docs\\codes\\$CODE_NAME.md")
- 
+
      # Open the file in write mode and write the content to it
      open(file_path, "w") do file
          write(file, markdown_content)
