@@ -77,7 +77,7 @@ const config = {
           {to: 'blog', label: 'Blog', position: 'left'},
           // Please keep GitHub link to the right for consistency.
           {
-            href: 'https://github.com/facebook/docusaurus',
+            href: 'https://github.com/Benzillaist/QECC-Wiki',
             label: 'GitHub',
             position: 'right',
           },
@@ -87,14 +87,40 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: 'Learn',
+            title: 'Docs',
             items: [
+              {
+                label: 'Get Started',
+                to: '/',
+              },
               {
                 label: 'Style Guide',
                 to: 'welcome/Add%20new%20code/create-a-page',
               },
             ],
           },
+          {
+            title: 'Community',
+            items: [
+              {
+                label: 'Stack Exchange',
+                to: 'https://quantumcomputing.stackexchange.com/',
+              },
+              {
+                label: 'Contributor Covenant',
+                to: 'https://www.contributor-covenant.org/version/1/4/code-of-conduct/',
+              },
+            ],
+          },
+          {
+            title: 'Social',
+            items: [
+              {
+                label: 'GitHub',
+                to: 'https://github.com/Benzillaist/QECC-Wiki',
+              },
+            ],
+          }
 
         ],
         logo: {

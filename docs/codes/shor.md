@@ -1,16 +1,13 @@
-# Example
+# Shor9
 
 ## Description
- - This is a test code
- - Description 1
- - Description 2
- - Description 3
+ - Nine-qubit CSS code that is the first quantum error-correcting code.
 
 ## Example
-- Number of qubits: N = 3
+- Number of qubits: N = 9
 - Number of encoded bits: k = 1
 ### Syndrome Circuit:
-![example Syndrome Circuit](../../src/pages/images/codeplots/example-codeplot.png)
+![shor Syndrome Circuit](../../src/pages/images/codeplots/shor-codeplot.png)
 
 ## Benchmarking Results
 

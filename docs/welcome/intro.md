@@ -1,48 +1,25 @@
 ---
 sidebar_position: 1
-slug: / 
+slug: /
 ---
 
-# Tutorial Intro
+# Welcome
 
-Let's discover **Docusaurus in less than 5 minutes**.
+Welcome to QECC-Wiki. Here is a **5 minutes primer** to the website
 
-## Getting Started
+## Introduction
 
-Get started by **creating a new site**.
+QECC-Wiki aims to provide the vivid implementation, examples, and references to a minuscule part of what is included in the original [Error Correction Zoo](https://errorcorrectionzoo.org/).
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+Visit the `Code` tab to a multitude of empirical and pedagogical codes frequently used in QECC.
 
-### What you'll need
+We aim to provide not only the description and detailed operations for most of the codes, but also performance benchmarking results between different codes. There will also be playgrounds and QASM codes for implementation on IBM Quiskit and other frameworks.
 
-- [Node.js](https://nodejs.org/en/download/) version 16.14 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+## Contributing
 
-## Generate a new site
+Please visit the `Add new code` tab to learn more about how you can contribute to our open source project.
 
-Generate a new Docusaurus site using the **classic template**.
+## About the team
 
-The classic template will automatically be added to your project after you run the command:
+QECC-Wiki is initiated and maintained by Krastanov Lab, University of Massachusetts Amherst. Visit `About` page to learn more about the project and contributors.
 
-```bash
-npm init docusaurus@latest my-website classic
-```
-
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
-
-The command also installs all necessary dependencies you need to run Docusaurus.
-
-## Start your site
-
-Run the development server:
-
-```bash
-cd my-website
-npm run start
-```
-
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
-
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
-
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.

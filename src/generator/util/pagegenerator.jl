@@ -13,7 +13,7 @@ export compile
  include("./pfcircuit_eval.jl")
  using .PauliFrame_Eval
 
- CODE_NAME = "example"
+ CODE_NAME = "steane"
 
  CONFIG_PATH = "../codelists/$CODE_NAME.jl"
  include(CONFIG_PATH)
@@ -55,7 +55,7 @@ export compile
          push!(result, "### Syndrome Circuit:")
 
          # Link image in markdown file
-         push!(result, "![$CODE_NAME Syndrome Circuit](../../pages/images/codeplots/$CODE_NAME-codeplot.png)")
+         push!(result, "![$CODE_NAME Syndrome Circuit](../../src/pages/images/codeplots/$CODE_NAME-codeplot.png)")
      catch e
          error("Error parsing config object: $e")
      end

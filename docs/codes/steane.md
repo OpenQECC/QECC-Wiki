@@ -1,16 +1,13 @@
-# Example
+# Steane7
 
 ## Description
- - This is a test code
- - Description 1
- - Description 2
- - Description 3
+ - This is also among the CSS codes and among the first quantum error-correcting code
 
 ## Example
-- Number of qubits: N = 3
+- Number of qubits: N = 7
 - Number of encoded bits: k = 1
 ### Syndrome Circuit:
-![example Syndrome Circuit](../../src/pages/images/codeplots/example-codeplot.png)
+![steane Syndrome Circuit](../../src/pages/images/codeplots/steane-codeplot.png)
 
 ## Benchmarking Results
 
