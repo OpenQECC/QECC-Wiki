@@ -1,25 +1,25 @@
 code = Dict(
-    "name"=>"Example",
+    "name"=>"Shor9",
     "description" => [
-        "This is a test code",
-        "Description 1",
-        "Description 2",
-        "Description 3"
+        "Nine-qubit CSS code that is the first quantum error-correcting code."
     ],
     "example" => Dict(
-        # "codestring"=>"XXI
-        # IXX"
-        "codestring"=>"___XXXX
-        _XX__XX
-        X_X_X_X
-        ___ZZZZ
-        _ZZ__ZZ
-        Z_Z_Z_Z"
+        "codestring"=>"ZZ_______
+        _ZZ______
+        ___ZZ____
+        ____ZZ___
+        ______ZZ_
+        _______ZZ
+        XXXXXX___
+        ___XXXXXX"
+        # "codestring"=>"___XXXX
+        # _XX__XX
+        # X_X_X_X
+        # ___ZZZZ
+        # _ZZ__ZZ
+        # Z_Z_Z_Z"
         # leaving room for future example additions
     ),
-    "benchmark" => Dict(
-        "error_rates"=>0.000:0.005:0.09,
-    ),  
     "similar" => [
         Dict(
             "name"=>"sample name",
@@ -44,6 +44,4 @@ code = Dict(
 
     "simulation"=>"", # link to simulation
     "replot" => true, # set to false if regenrating plot is unnecessary in the next run
-
-
 )

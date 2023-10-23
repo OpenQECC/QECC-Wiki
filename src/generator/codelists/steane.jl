@@ -1,25 +1,23 @@
 code = Dict(
-    "name"=>"Example",
+    "name"=>"Steane7",
     "description" => [
-        "This is a test code",
-        "Description 1",
-        "Description 2",
-        "Description 3"
+        "This is also among the CSS codes and among the first quantum error-correcting code",
     ],
     "example" => Dict(
-        # "codestring"=>"XXI
-        # IXX"
         "codestring"=>"___XXXX
         _XX__XX
         X_X_X_X
         ___ZZZZ
         _ZZ__ZZ
         Z_Z_Z_Z"
+        # "codestring"=>"___XXXX
+        # _XX__XX
+        # X_X_X_X
+        # ___ZZZZ
+        # _ZZ__ZZ
+        # Z_Z_Z_Z"
         # leaving room for future example additions
     ),
-    "benchmark" => Dict(
-        "error_rates"=>0.000:0.005:0.09,
-    ),  
     "similar" => [
         Dict(
             "name"=>"sample name",
