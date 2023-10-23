@@ -30,37 +30,6 @@ function decode_using_table_decoder(syndrome, lookup_table)
     end
 end
 
-# struct Steane7 <: AbstractECC end
-# # Parity check matrix for Steane7 code
-# parity_checks(c::Steane7) = S"___XXXX
-#      _XX__XX
-#      X_X_X_X
-#      ___ZZZZ
-#      _ZZ__ZZ
-#      Z_Z_Z_Z"
-
-
-# Bicycle code
-struct Bicycle <: AbstractECC end
-
-# Bicycle code for Bicycle struct
-bicycle_code(c::Bicycle) = S"XX_X___X___X_X
-                            _XX_X__XX___X_
-                            __XX_X__XX___X
-                            ___XX_XX_XX___
-                            X___XX__X_XX__
-                            _X___XX__X_XX_"
-
-# Parity check matrix for Bicycle code
-parity_checks(c::Bicycle) = S"XX_XX_X
-                             X__XXX_
-                             ZZ_ZZ_Z
-                             Z__ZZZ_"
-
-
-
-
-
 lookup_table_three = create_lookup_table_3_errors(H)
 
 # Sample syndrome
