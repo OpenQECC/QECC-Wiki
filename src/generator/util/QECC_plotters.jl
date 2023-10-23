@@ -1,8 +1,8 @@
-module QECC_plotters
+module QECC_Plotters
 
-export plot_code_performance
+export plot_code_performance, evaluate_code_decoder, evaluate_degen_code_decoder
 
-using QuantumClifford, QuantumClifford.ECC
+using QuantumClifford, QuantumClifford.ECC, CairoMakie
 
  function evaluate_code_decoder(H,lookup_table,p; samples=10_000)
      constraints, bits = size(H)
@@ -15,7 +15,7 @@ using QuantumClifford, QuantumClifford.ECC
              decoded += 1
          end
      end
-     return 1 - decoded / samples
+     return 1- (decoded / samples)
  end;
 
  function evaluate_code_decoder(code::Stabilizer,lookup_table,p; samples=10_000)
@@ -34,12 +34,12 @@ using QuantumClifford, QuantumClifford.ECC
              decoded += 1
          end
      end
-     return 1 - decoded / samples
+     return 1 - (decoded / samples) 
  end;
  
  function plot_code_performance(error_rates, post_ec_error_rates; title="")
      f = Figure(resolution=(500,300))
-     ax = f[1,1] = Axis(f, xlabel="single (qu)bit error rate",title=title)
+     ax = f[1,1] = Axis(f, xlabel="single (qu)bit error rate", ylabel="Logical error rate",title=title)
      ax.aspect = DataAspect()
      lim = max(error_rates[end],post_ec_error_rates[end])
      lines!([0,lim], [0,lim], label="single bit", color=:black)

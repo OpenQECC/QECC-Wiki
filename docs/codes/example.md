@@ -1,4 +1,4 @@
-# Example
+# {Code Name}
 
 ## Description
  - This is a test code
@@ -7,12 +7,24 @@
  - Description 3
 
 ## Example
-- Number of qubits: N = 3
+Code Tableau:
+___XXXX
+        _XX__XX
+        X_X_X_X
+        ___ZZZZ
+        _ZZ__ZZ
+        Z_Z_Z_Z
+- Number of qubits: N = 7
 - Number of encoded bits: k = 1
 ### Syndrome Circuit:
-![example Syndrome Circuit](../../src/pages/images/codeplots/example-codeplot.png)
+![example Syndrome Circuit](images\codeplots\example-codeplot.png)
 
 ## Benchmarking Results
+This code was tested with the following decoders:
+**Lookup table:** Ran in 0.3957s
+![example Truth Table PP](images\performanceplots\example-lookuptable.png)
+**Belief decoder:** Ran in 7.49s
+![example Belief Decoder PP](images\performanceplots\example-belief.png)
 
 ## 
 

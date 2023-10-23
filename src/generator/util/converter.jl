@@ -1,6 +1,6 @@
 module converter
 
-export binaryToStabilizer, stabilizerStringToTableau
+export binaryToStabilizer, stabilizerStringToTableau, generate_openQasm_file
 
  using QuantumClifford
  using QuantumClifford: Tableau
@@ -43,7 +43,60 @@ export binaryToStabilizer, stabilizerStringToTableau
      return stab_str
  end
  
- 
+ function generate_openQasm_file(stabilizer_str::String, file_path::String)
+    tab = stabilizerStringToTableau(stabilizer_str)
+    stab = Stabilizer(tab)
+    ccir = naive_encoding_circuit(stab)
+
+    num_ancila = size(tab)[1]
+    num_qubits = size(tab)[2]
+
+    qasm_code = """
+    OPENQASM 2.0;
+    include "qelib1.inc";
+
+    qreg q[$num_qubits];
+    creg c[$num_ancila];
+    """
+
+    for elem in ccir
+        # println(typeof(elem))
+        if typeof(elem) == sHadamard
+            q1 = elem.q-1
+            qasm_code = qasm_code*"\nh q[$q1];"
+        elseif typeof(elem) == sZCX || typeof(elem) == sCNOT
+            # cNOT gate
+            q1 = elem.q1-1
+            q2 = elem.q2-1
+            qasm_code = qasm_code*"\ncx q[$q1], q[$q2];"
+        elseif typeof(elem) == sZCY
+            q1 = elem.q1-1
+            q2 = elem.q2-1
+            qasm_code = qasm_code*"\ncy q[$q1], q[$q2];"
+        elseif typeof(elem) == sZCZ
+            q1 = elem.q1-1
+            q2 = elem.q2-1
+            qasm_code = qasm_code*"\ncz q[$q1], q[$q2];"
+        elseif typeof(elem) == sX
+            q1 = elem.q-1
+            qasm_code = qasm_code*"\nx q[$q1];"
+        elseif typeof(elem) == sY
+            q1 = elem.q-1
+            qasm_code = qasm_code*"\ny q[$q1];"
+        elseif typeof(elem) == sZ
+            q1 = elem.q-1
+            qasm_code = qasm_code*"\nz q[$q1];"
+        elseif typeof(elem) == sPhase
+            q1 = elem.q-1
+            qasm_code = qasm_code*"\ns q[$q1];"
+        end
+    end
+
+    # Open the file for writing (creates the file if it doesn't exist)
+    open(file_path, "w") do file
+        write(file, qasm_code)
+    end
+end
  
  function stabilizerStringToTableau(stabilizer_str::String)
      # Define the mapping for Pauli operators to [phase, x, z]

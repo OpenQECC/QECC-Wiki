@@ -137,7 +137,7 @@ module PauliFrame_Eval
  """Taken from the QEC Seminar notebook for plotting logical vs physical error"""
  function plot_code_performance(error_rates, post_ec_error_rates; title="")
      f = Figure(resolution=(500,300))
-     ax = f[1,1] = Axis(f, xlabel="single (qu)bit error rate",title=title)
+     ax = f[1,1] = Axis(f, xlabel="single (qu)bit error rate", ylabel="Logical error rate",title=title)
      ax.aspect = DataAspect()
      lim = max(error_rates[end],post_ec_error_rates[end])
      lines!([0,lim], [0,lim], label="single bit", color=:black)
@@ -153,24 +153,35 @@ module PauliFrame_Eval
      pf_encoding_plot(checks, name)
  end
  function pf_encoding_plot(checks, name="")
-     scirc, _ = naive_syndrome_circuit(checks)
-     ecirc = naive_encoding_circuit(checks)
- 
+     (scirc, _), time1, _ = @timed naive_syndrome_circuit(checks)
+    #  a = @timed naive_syndrome_circuit(checks)
+    #  println(a)
+    #  println(scirc)
+    #  println(time1)
+     ecirc, time2, _ = @timed naive_encoding_circuit(checks)
+    #  a = @timed naive_encoding_circuit(checks)
+    #  println(a)
+    #  println(ecirc)
+    #  println(time2)
+
      error_rates = 0.000:0.0025:0.2
-     post_ec_error_rates = [evaluate_code_decoder_w_ecirc_pf(checks, ecirc, scirc, p) for p in error_rates]
+     post_ec_error_rates, time3, _ = @timed [evaluate_code_decoder_w_ecirc_pf(checks, ecirc, scirc, p) for p in error_rates]
+    #  println(time3)
      
+     total_time = round(time1 + time2 + time3, sigdigits=4)
+
      x_error = [post_ec_error_rates[i][1] for i in eachindex(post_ec_error_rates)]
      z_error = [post_ec_error_rates[i][2] for i in eachindex(post_ec_error_rates)]
      a_error = (x_error + z_error) / 2
  
-     f_x = plot_code_performance(error_rates, x_error,title="Logical X Error of "*name*" Circuit PF")
-     f_z = plot_code_performance(error_rates, z_error,title="Logical Z Error of "*name*" Circuit PF")
-     f_a = plot_code_performance(error_rates, z_error,title="Logical Error of "*name*" Circuit PF")
+     f_x = plot_code_performance(error_rates, x_error,title=""*name*": Belief Decoder X @$total_time"*"s")
+     f_z = plot_code_performance(error_rates, z_error,title=""*name*": Belief Decoder Z @$total_time"*"s")
+     f_a = plot_code_performance(error_rates, a_error,title=""*name*": Belief Decoder @$total_time"*"s")
  
-     return f_x, f_z, f_a
+     return f_x, f_z, f_a, total_time
  end
  
- # f_x_Steane, f_z_Steane = pf_encoding_plot(Steane7())
+#  f_x_Steane, f_z_Steane = pf_encoding_plot(Steane7())
  # f_x_Shor, f_z_Shor = pf_encoding_plot(Shor9())
  # f_x_Cleve, f_z_Cleve = pf_encoding_plot(Cleve8())
  # f_x_Perfect5, f_z_Perfect5 = pf_encoding_plot(Perfect5())
