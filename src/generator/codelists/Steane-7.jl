@@ -3,9 +3,8 @@
 code = Dict(
     "name"=>"Steane-7",
     "description" => [
-        "The Steane code is a quantum error-correcting code that encodes a single 
-        logical qubit into seven physical qubits. It is designed to correct for any single qubit error, 
-        which includes both bit-flip (analogous to classical bit errors) and phase-flip (a uniquely quantum error) errors."
+        "The Steane code is a quantum error-correcting code that encodes a single logical qubit into seven physical qubits.",
+        "This code is designed to correct for any single qubit error, which includes both bit-flip (analogous to classical bit errors) and phase-flip (a uniquely quantum error) errors."
     ],
     "example" => Dict(
         # "codestring"=>"ZZZ_____
@@ -30,22 +29,17 @@ code = Dict(
     ),
     "similar" => [
         Dict(
-            "name"=>"",
-            "link"=>"",
-            "desc"=>""
-        ),
-        Dict(
-            "name"=>"",
-            "link"=>"",
-            "desc"=>""
+            "name"=>"Shor-9",
+            "link"=>"https://math.mit.edu/~shor/papers/good-codes.pdf",
+            "desc"=>"Degenerate CSS code designed to account for parity errors"
         ),
     ],
     "citation" => [
         Dict(
-            "author" => "",
-            "doi" => "",
-            "journal" => "",
-            "title" => "", 
+            "author" => "Andrew Steane",
+            "doi" => "https://doi.org/10.1098/rspa.1996.0136",
+            "journal" => "Proc.Roy.Soc.Lond. A452 (1996) 2551",
+            "title" => "Multiple Particle Interference and Quantum Error Correction",
         ),
 
     ],

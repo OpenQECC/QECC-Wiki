@@ -60,7 +60,7 @@ export compile
          n = code_n(stab)
          k = code_k(stab)
          push!(result, "Code Tableau:")
-         push!(result, code["example"]["codestring"])
+         push!(result, join(split(code["example"]["codestring"], ' ')))
          push!(result, "- Number of qubits: N = $n")
          push!(result, "- Number of encoded bits: k = $k")
          push!(result, "### Syndrome Circuit:")
@@ -135,7 +135,7 @@ export compile
     # generate QASM file
     save_dir = string(@__DIR__, "\\..\\..\\..\\docs\\codes\\QASMDownloads\\")
     generate_openQasm_file(code["example"]["codestring"], save_dir*CODE_NAME*"-encodingCircuit.qasm")
-    push!(result, "[QASM Encoding Circuit]("*save_dir*CODE_NAME*"-encodingCircuit.qasm)")
+    push!(result, "[QASM Encoding Circuit](QASMDownloads\\"*CODE_NAME*"-encodingCircuit.qasm)")
     return result
  end
 
@@ -180,7 +180,7 @@ export compile
  
  function main()
      # Define the string you want to write to the .md file
-     markdown_content = join([getCodeName(), describe(), example(), benchmark(), generator(), QASMdownload() getSimilar(), references()], """\n\n## """)
+     markdown_content = join([getCodeName(), describe(), example(), benchmark(), generator(), QASMdownload(), getSimilar(), references()], """\n\n## """)
  
      # Specify the file path where you want to save the .md file
      file_path = string(@__DIR__, "\\..\\..\\..\\docs\\codes\\$CODE_NAME.md")

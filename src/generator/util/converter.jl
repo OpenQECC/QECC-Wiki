@@ -1,6 +1,6 @@
 module converter
 
-export binaryToStabilizer, stabilizerStringToTableau
+export binaryToStabilizer, stabilizerStringToTableau, generate_openQasm_file
 
  using QuantumClifford
  using QuantumClifford: Tableau
@@ -44,10 +44,12 @@ export binaryToStabilizer, stabilizerStringToTableau
  end
  
  function generate_openQasm_file(stabilizer_str::String, file_path::String)
-    ccir = QuantumClifford.ECC.naive_encoding_circuit(stabilizer_str)
+    tab = stabilizerStringToTableau(stabilizer_str)
+    stab = Stabilizer(tab)
+    ccir = naive_encoding_circuit(stab)
 
-    num_ancila = length(stabilizer_str)
-    num_qubits = length(stabilizer_str[1])
+    num_ancila = size(tab)[1]
+    num_qubits = size(tab)[2]
 
     qasm_code = """
     OPENQASM 2.0;
@@ -92,7 +94,7 @@ export binaryToStabilizer, stabilizerStringToTableau
 
     # Open the file for writing (creates the file if it doesn't exist)
     open(file_path, "w") do file
-        write(file, qasm_code_1)
+        write(file, qasm_code)
     end
 end
  

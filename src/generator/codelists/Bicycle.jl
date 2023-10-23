@@ -3,10 +3,9 @@
 code = Dict(
     "name"=>"Bicycle",
     "description" => [
-        "This is a test code",
-        "Description 1",
-        "Description 2",
-        "Description 3"
+        "This LDPC code is based on circulant matrices of difference sets.",
+        "The difference should satisfy the property that each every difference (modulo N/2) in the set occurs at most once",
+        "This is a CSS code where each sub-matrix is constructed from the circulant and it's transpose horizontally contatinated. This sub-matrix then has some of it's rows removed while trying to keep the number of checks per column the same.",
     ],
     "example" => Dict(
         # "codestring"=>"XX_X___X___X_X
@@ -26,22 +25,17 @@ code = Dict(
     ),
     "similar" => [
         Dict(
-            "name"=>"",
-            "link"=>"",
-            "desc"=>""
-        ),
-        Dict(
-            "name"=>"",
-            "link"=>"",
-            "desc"=>""
+            "name"=>"Unicycle Codes",
+            "link"=>"https://arxiv.org/abs/quant-ph/0304161",
+            "desc"=>"Circulant code based on perfect difference sets"
         ),
     ],
     "citation" => [
         Dict(
-            "author" => "",
-            "doi" => "",
-            "journal" => "",
-            "title" => "", 
+            "author" => "David J.C. MacKay, Graeme Mitchison, Paul L. McFadden",
+            "doi" => "https://ieeexplore.ieee.org/document/1337106",
+            "journal" => "IEEE Transactions on Information Theory, Vol. 50, No. 10, p. 2315 (2004)",
+            "title" => "Sparse Graph Codes for Quantum Error-Correction", 
         ),
 
     ],
