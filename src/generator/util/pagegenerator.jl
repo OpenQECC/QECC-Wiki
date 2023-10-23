@@ -134,10 +134,11 @@ export compile
     result = String["QASM Downloads"]
     # generate QASM file
     save_dir = string(@__DIR__, "\\..\\..\\..\\docs\\codes\\QASMDownloads\\")
+    generate_openQasm_file(code["example"]["codestring"], save_dir*CODE_NAME*"-encodingCircuit.qasm")
     push!(result, "[QASM Encoding Circuit]("*save_dir*CODE_NAME*"-encodingCircuit.qasm)")
     return result
  end
- 
+
  function getSimilar()
      result = String[]
      try

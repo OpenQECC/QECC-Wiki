@@ -43,7 +43,58 @@ export binaryToStabilizer, stabilizerStringToTableau
      return stab_str
  end
  
- 
+ function generate_openQasm_file(stabilizer_str::String, file_path::String)
+    ccir = QuantumClifford.ECC.naive_encoding_circuit(stabilizer_str)
+
+    num_ancila = length(stabilizer_str)
+    num_qubits = length(stabilizer_str[1])
+
+    qasm_code = """
+    OPENQASM 2.0;
+    include "qelib1.inc";
+
+    qreg q[$num_qubits];
+    creg c[$num_ancila];
+    """
+
+    for elem in ccir
+        # println(typeof(elem))
+        if typeof(elem) == sHadamard
+            q1 = elem.q-1
+            qasm_code = qasm_code*"\nh q[$q1];"
+        elseif typeof(elem) == sZCX || typeof(elem) == sCNOT
+            # cNOT gate
+            q1 = elem.q1-1
+            q2 = elem.q2-1
+            qasm_code = qasm_code*"\ncx q[$q1], q[$q2];"
+        elseif typeof(elem) == sZCY
+            q1 = elem.q1-1
+            q2 = elem.q2-1
+            qasm_code = qasm_code*"\ncy q[$q1], q[$q2];"
+        elseif typeof(elem) == sZCZ
+            q1 = elem.q1-1
+            q2 = elem.q2-1
+            qasm_code = qasm_code*"\ncz q[$q1], q[$q2];"
+        elseif typeof(elem) == sX
+            q1 = elem.q-1
+            qasm_code = qasm_code*"\nx q[$q1];"
+        elseif typeof(elem) == sY
+            q1 = elem.q-1
+            qasm_code = qasm_code*"\ny q[$q1];"
+        elseif typeof(elem) == sZ
+            q1 = elem.q-1
+            qasm_code = qasm_code*"\nz q[$q1];"
+        elseif typeof(elem) == sPhase
+            q1 = elem.q-1
+            qasm_code = qasm_code*"\ns q[$q1];"
+        end
+    end
+
+    # Open the file for writing (creates the file if it doesn't exist)
+    open(file_path, "w") do file
+        write(file, qasm_code_1)
+    end
+end
  
  function stabilizerStringToTableau(stabilizer_str::String)
      # Define the mapping for Pauli operators to [phase, x, z]
