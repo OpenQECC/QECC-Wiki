@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkqecc_wiki=self.webpackChunkqecc_wiki||[]).push([[3743],{4616:e=>{e.exports=JSON.parse('{"label":"hello","permalink":"/QECC-Wiki/blog/tags/hello","allTagsPath":"/QECC-Wiki/blog/tags","count":2}')}}]);
