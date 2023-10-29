@@ -23,8 +23,8 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'Krastanov Lab', // Usually your GitHub org/user name.
-  projectName: 'QECC - Wiki', // Usually your repo name.
+  organizationName: 'OpenQECC', // Usually your GitHub org/user name.
+  projectName: 'QECC-Wiki', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
