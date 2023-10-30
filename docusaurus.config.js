@@ -60,7 +60,14 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      image: 'img/docusaurus-social-card.jpg',
+      image: 'img/qecc-opensource.jpg',
+      algolia:{
+        apiKey:'2a94c6926ec520132a620eec33bcf648',
+        indexName:'openqecc',
+        contextualSearch:true,
+        placeholder:'Search QECC-Wiki',
+        appId:'75SB2RIIGT',
+      },
       navbar: {
         title: 'QECC-Wiki',
         logo: {
