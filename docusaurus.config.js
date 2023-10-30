@@ -25,7 +25,7 @@ const config = {
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'OpenQECC', // Usually your GitHub org/user name.
   projectName: 'QECC-Wiki', // Usually your repo name.
-  deploymentBranch: 'main',
+  // deploymentBranch: 'main',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
