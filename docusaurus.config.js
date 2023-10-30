@@ -25,7 +25,7 @@ const config = {
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'OpenQECC', // Usually your GitHub org/user name.
   projectName: 'QECC-Wiki', // Usually your repo name.
-
+  deploymentBranch: 'main',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
@@ -43,7 +43,7 @@ const config = {
           editUrl:
             'https://github.com/Benzillaist/QECC-Wiki',
         },
-        // blog: {
+        // z  log: {
         //   showReadingTime: true,
         //   // Please change this to your repo.
         //   // Remove this to remove the "edit this page" links.
