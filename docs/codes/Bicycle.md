@@ -7,32 +7,33 @@
 
 ## Example
 Code Tableau:
-```
 XX_XX_X
 X__XXX_
 ZZ_ZZ_Z
 Z__ZZZ_
-```
-
 - Number of qubits: N = 7
 - Number of encoded bits: k = 3
 ### Syndrome Circuit:
 ![Bicycle Syndrome Circuit](images/codeplots/Bicycle-codeplot.png)
 
 ## Benchmarking Results
+
 This code was tested with the following decoders:
-**Lookup table:** Ran in 0.4039s
+
+**Lookup table:** Ran in 1.075s
+
 ![Bicycle Truth Table PP](images\performanceplots\Bicycle-lookuptable.png)
-**Belief decoder:** Ran in 13.44s
-![Bicycle Belief Decoder PP](images\performanceplots\Bicycle-beliefa.png)
 
+**Belief decoder:** Ran in 4.17s
 
-##
+![Bicycle Belief Decoder PP](images\performanceplots\Bicycle-belief.png)
 
-## QASM Downloads
-[Encoding Circuit](QASMDownloads\\Bicycle-encodingCircuit.qasm)
+## 
 
-## Similar Codes
+## ## QASM Downloads
+[QASM Encoding Circuit](QASMDownloads\Bicycle-encodingCircuit.qasm)
+
+## Similar Codes 
 - **[Unicycle Codes](https://arxiv.org/abs/quant-ph/0304161)**: Circulant code based on perfect difference sets
 
 ## References

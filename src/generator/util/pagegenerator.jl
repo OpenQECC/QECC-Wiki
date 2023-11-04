@@ -88,14 +88,17 @@ export compile
             # Truth table decoder
             lookup_table, lt_time1, _ = @timed create_lookup_table(stab)
             error_rates = code["benchmark"]["error_rates"]
-            post_ec_error_rates, lt_time2, _ = @timed [evaluate_code_decoder(stab, lookup_table, p) for p in error_rates]
+            log_error_rates = [10^p for p in error_rates]
+            println(log_error_rates)
+            post_ec_error_rates, lt_time2, _ = @timed [evaluate_code_decoder(stab, lookup_table, p) for p in log_error_rates]
+            println(post_ec_error_rates)
             lt_time = round(lt_time1 + lt_time2, sigdigits=4)
             push!(times, lt_time)
-            lt_plot = plot_code_performance(error_rates, post_ec_error_rates, title="$CODE_NAME: Lookup table @$lt_time"*"s")
+            lt_plot = plot_code_performance(log_error_rates, post_ec_error_rates, title="$CODE_NAME: Lookup table @$lt_time"*"s")
             save(image_dir * "$CODE_NAME-lookuptable.png", lt_plot)
 
             # Krishna decoder
-            bp_x_plot, bp_z_plot, bp_a_plot, bp_time = pf_encoding_plot(stab, CODE_NAME)
+            bp_x_plot, bp_z_plot, bp_a_plot, bp_time = pf_encoding_plot(stab, log_error_rates, CODE_NAME)
             push!(times, bp_time)
             save(image_dir * "$CODE_NAME-beliefx.png", bp_x_plot)
             save(image_dir * "$CODE_NAME-beliefz.png", bp_z_plot)
@@ -136,7 +139,7 @@ export compile
     save_dir = string(@__DIR__, "\\..\\..\\..\\docs\\codes\\QASMDownloads\\")
     generate_openQasm_file(code["example"]["codestring"], save_dir*CODE_NAME*"-encodingCircuit.qasm")
     push!(result, "[QASM Encoding Circuit](QASMDownloads\\"*CODE_NAME*"-encodingCircuit.qasm)")
-    return '\n'.join(result)
+    return join(result, "\n")
  end
 
  function getSimilar()
