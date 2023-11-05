@@ -1,8 +1,13 @@
 module PauliFrame_Eval
 
- export create_lookup_table, evaluate_code_decoder_w_ecirc_pf, plot_code_performance, pf_encoding_plot
+ export create_lookup_table, evaluate_code_decoder_w_ecirc_pf, pf_encoding_plot
+
+ include("QECC_plotters.jl")
+
+ using .QECC_Plotters: plot_code_performance
  
- using QuantumClifford, CairoMakie, SparseArrays, LDPCDecoders
+ using CairoMakie, SparseArrays, LDPCDecoders
+ using QuantumClifford: Stabilizer, MixedDestabilizer, sHadamard, logicalxview, logicalzview, sMRZ, PauliError, pftrajectories, pfmeasurements, stab_to_gf2, PauliFrame, PauliError
  using QuantumClifford.ECC: faults_matrix, naive_syndrome_circuit, parity_checks, AbstractECC, naive_encoding_circuit, Cleve8, Steane7, Shor9, Perfect5
  
  """Generate a lookup table for decoding single qubit errors. Maps s⃗ → e⃗."""
@@ -134,25 +139,11 @@ module PauliFrame_Eval
      return x_error, z_error
  end
  
- """Taken from the QEC Seminar notebook for plotting logical vs physical error"""
- function plot_code_performance(error_rates, post_ec_error_rates; title="")
-     f = Figure(resolution=(500,300))
-     ax = f[1,1] = Axis(f, xlabel="single (qu)bit error rate", ylabel="Logical error rate",title=title)
-     ax.aspect = DataAspect()
-     lim = max(error_rates[end],post_ec_error_rates[end])
-     lines!([0,lim], [0,lim], label="single bit", color=:black)
-     plot!(error_rates, post_ec_error_rates, label="after decoding", color=:black)
-     xlims!(0,lim)
-     ylims!(0,lim)
-     f[1,2] = Legend(f, ax, "Error Rates")
-     f
- end
- 
  function pf_encoding_plot(code::AbstractECC, name=string(typeof(code)))
      checks = parity_checks(code)
      pf_encoding_plot(checks, name)
  end
- function pf_encoding_plot(checks, name="")
+ function pf_encoding_plot(checks, error_rates, name="")
      (scirc, _), time1, _ = @timed naive_syndrome_circuit(checks)
     #  a = @timed naive_syndrome_circuit(checks)
     #  println(a)
@@ -164,7 +155,7 @@ module PauliFrame_Eval
     #  println(ecirc)
     #  println(time2)
 
-     error_rates = 0.000:0.0025:0.2
+    #  error_rates = 0.025:0.0025:0.2
      post_ec_error_rates, time3, _ = @timed [evaluate_code_decoder_w_ecirc_pf(checks, ecirc, scirc, p) for p in error_rates]
     #  println(time3)
      

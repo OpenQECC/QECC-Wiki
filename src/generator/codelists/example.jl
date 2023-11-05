@@ -18,7 +18,7 @@ code = Dict(
         # leaving room for future example additions
     ),
     "benchmark" => Dict(
-        "error_rates"=>0.000:0.005:0.09,
+        "error_rates"=>0.005:0.005:0.09,
     ),  
     "similar" => [
         Dict(

@@ -6,35 +6,35 @@
 
 ## Example
 Code Tableau:
-```
 ___XXXX
 _XX__XX
 X_X_X_X
 ___ZZZZ
 _ZZ__ZZ
 Z_Z_Z_Z
-```
-
 - Number of qubits: N = 7
 - Number of encoded bits: k = 1
 ### Syndrome Circuit:
 ![Steane-7 Syndrome Circuit](images/codeplots/Steane-7-codeplot.png)
 
 ## Benchmarking Results
+
 This code was tested with the following decoders:
-**Lookup table:** Ran in 0.3263s
+
+**Lookup table:** Ran in 1.226s
+
 ![Steane-7 Truth Table PP](images\performanceplots\Steane-7-lookuptable.png)
 
-**Belief decoder:** Ran in 7.398s
+**Belief decoder:** Ran in 2.388s
 
-![Steane-7 Belief Decoder PP](images\performanceplots\Steane-7-beliefa.png)
+![Steane-7 Belief Decoder PP](images\performanceplots\Steane-7-belief.png)
 
-##
+## 
 
-## QASM Downloads
-[Encoding Circuit](QASMDownloads\\Steane-7-encodingCircuit.qasm)
+## ## QASM Downloads
+[QASM Encoding Circuit](QASMDownloads\Steane-7-encodingCircuit.qasm)
 
-## Similar Codes
+## Similar Codes 
 - **[Shor-9](https://math.mit.edu/~shor/papers/good-codes.pdf)**: Degenerate CSS code designed to account for parity errors
 
 ## References

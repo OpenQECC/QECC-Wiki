@@ -39,13 +39,13 @@ using QuantumClifford, QuantumClifford.ECC, CairoMakie
  
  function plot_code_performance(error_rates, post_ec_error_rates; title="")
      f = Figure(resolution=(500,300))
-     ax = f[1,1] = Axis(f, xlabel="single (qu)bit error rate", ylabel="Logical error rate",title=title)
+     ax = f[1,1] = Axis(f, xlabel="single (qu)bit error rate", ylabel="Logical error rate", xscale = log10, yscale = log10, title=title)
      ax.aspect = DataAspect()
      lim = max(error_rates[end],post_ec_error_rates[end])
-     lines!([0,lim], [0,lim], label="single bit", color=:black)
+     lines!([0.00001,lim], [0.00001,lim], label="single bit", color=:black)
      plot!(error_rates, post_ec_error_rates, label="after decoding", color=:black)
-     xlims!(0,lim)
-     ylims!(0,lim)
+     xlims!(0.00001, lim)
+     ylims!(0.00001, lim)
      f[1,2] = Legend(f, ax, "Error Rates")
      return f
  end;
