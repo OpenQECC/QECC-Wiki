@@ -46,9 +46,9 @@ export binaryToStabilizer, stabilizerStringToTableau, generate_openQasm_file
  function generate_openQasm_file(stabilizer_str::String, file_path::String)
     tab = stabilizerStringToTableau(stabilizer_str)
     stab = Stabilizer(tab)
-    ccir = naive_encoding_circuit(stab)
+    ccir = shor_syndrome_circuit(stab)
 
-    num_ancila = size(tab)[1]
+    num_ancilla = size(tab)[1]
     num_qubits = size(tab)[2]
 
     qasm_code = """
@@ -56,9 +56,10 @@ export binaryToStabilizer, stabilizerStringToTableau, generate_openQasm_file
     include "qelib1.inc";
 
     qreg q[$num_qubits];
-    creg c[$num_ancila];
+    qreg anc[$num_ancilla];  // Ancilla qubits for syndrome measurement
+    creg c[$num_ancilla];  // Classical register for measurement outcomes
     """
-
+    
     for elem in ccir
         # println(typeof(elem))
         if typeof(elem) == sHadamard
@@ -90,6 +91,12 @@ export binaryToStabilizer, stabilizerStringToTableau, generate_openQasm_file
             q1 = elem.q-1
             qasm_code = qasm_code*"\ns q[$q1];"
         end
+    end
+
+    # Syndrome measurement
+    qasm_code *= "\n// Measure the ancilla qubits for syndrome extraction"
+    for i in 1:num_ancilla
+        qasm_code *= "\nmeasure anc[$(i-1)] -> c[$(i-1)];"
     end
 
     # Open the file for writing (creates the file if it doesn't exist)
