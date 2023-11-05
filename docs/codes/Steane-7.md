@@ -14,6 +14,7 @@ _ZZ__ZZ
 Z_Z_Z_Z
 - Number of qubits: N = 7
 - Number of encoded bits: k = 1
+- The Steane-7 code is not degenerate.
 ### Syndrome Circuit:
 ![Steane-7 Syndrome Circuit](images/codeplots/Steane-7-codeplot.png)
 
@@ -21,13 +22,17 @@ Z_Z_Z_Z
 
 This code was tested with the following decoders:
 
-**Lookup table:** Ran in 1.226s
+**Lookup table:** Ran in 0.0711s
 
 ![Steane-7 Truth Table PP](images\performanceplots\Steane-7-lookuptable.png)
 
-**Belief decoder:** Ran in 2.388s
+**Belief decoder:** Ran in 18.32s
 
-![Steane-7 Belief Decoder PP](images\performanceplots\Steane-7-belief.png)
+![Steane-7 Belief Decoder X PP](images\performanceplots\Steane-7-beliefx.png)
+
+**Belief decoder:** Ran in 18.32s
+
+![Steane-7 Belief Decoder Z PP](images\performanceplots\Steane-7-beliefz.png)
 
 ## 
 

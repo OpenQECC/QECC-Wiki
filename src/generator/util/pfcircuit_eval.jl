@@ -32,7 +32,7 @@ module PauliFrame_Eval
  end
  
  """Currently uses a 1 qubit lookup table decoder. Assumes scirc is generated with naive_syndrome_circuit - I have a different function for fault tolerant syndromes circuits"""
- function evaluate_code_decoder_w_ecirc_pf(checks::Stabilizer, ecirc, scirc, p_error; nframes=10_000, encoding_locs=nothing)
+ function evaluate_code_decoder_w_ecirc_pf(checks::Stabilizer, ecirc, scirc, p_error; nframes=100_000, encoding_locs=nothing)
      s, n = size(checks)
      k = n-s
  
@@ -163,13 +163,13 @@ module PauliFrame_Eval
 
      x_error = [post_ec_error_rates[i][1] for i in eachindex(post_ec_error_rates)]
      z_error = [post_ec_error_rates[i][2] for i in eachindex(post_ec_error_rates)]
-     a_error = (x_error + z_error) / 2
+    #  a_error = (x_error + z_error) / 2
  
      f_x = plot_code_performance(error_rates, x_error,title=""*name*": Belief Decoder X @$total_time"*"s")
      f_z = plot_code_performance(error_rates, z_error,title=""*name*": Belief Decoder Z @$total_time"*"s")
-     f_a = plot_code_performance(error_rates, a_error,title=""*name*": Belief Decoder @$total_time"*"s")
+    #  f_a = plot_code_performance(error_rates, a_error,title=""*name*": Belief Decoder @$total_time"*"s")
  
-     return f_x, f_z, f_a, total_time
+     return f_x, f_z, total_time
  end
  
 #  f_x_Steane, f_z_Steane = pf_encoding_plot(Steane7())

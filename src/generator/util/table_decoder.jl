@@ -5,9 +5,6 @@ using Combinatorics
 function create_lookup_table_3_errors(H)
     lookup_table_three = Dict()
     constraints, bits = size(H)
-    
-    lookup_table_three[zeros(Int, constraints)] = zeros(Int, bits)
-
     for num_errors in 1:3  # Looping for 1 to 3 errors
         for error_positions in combinations(1:bits, num_errors)
             error = zeros(Int, bits)
@@ -18,7 +15,7 @@ function create_lookup_table_3_errors(H)
             lookup_table_three[syndrome] = error
         end
     end
-    
+    lookup_table_three[zeros(Int, constraints)] = zeros(Int, bits)
     return lookup_table_three
 end
 

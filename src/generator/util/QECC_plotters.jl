@@ -4,7 +4,7 @@ export plot_code_performance, evaluate_code_decoder, evaluate_degen_code_decoder
 
 using QuantumClifford, QuantumClifford.ECC, CairoMakie
 
- function evaluate_code_decoder(H,lookup_table,p; samples=10_000)
+ function evaluate_code_decoder(H,lookup_table,p; samples=100_000)
      constraints, bits = size(H)
      decoded = 0 # Counts correct decodings
      for sample in 1:samples
@@ -18,19 +18,15 @@ using QuantumClifford, QuantumClifford.ECC, CairoMakie
      return 1- (decoded / samples)
  end;
 
- function evaluate_code_decoder(code::Stabilizer,lookup_table,p; samples=10_000)
+ function evaluate_code_decoder(code::Stabilizer,lookup_table,p; samples=1)
      constraints, qubits = size(code)
-     decoded = 0 # Counts correct decodings
+     decoded = 0                                           # Counts correct decodings
      for sample in 1:samples
-         # Generate random error
-         error = random_pauli(qubits,p/3,nophase=true)
-         # Apply that error to your physical system
-         # and get syndrome
-         syndrome = comm(error, code)
-         # Decode the syndrome
-         guess = get(lookup_table,syndrome,nothing)
-         # check if you were right
-         if guess==error
+         error = random_pauli(qubits,p/3,nophase=true)     # Generate random error
+         println("Error: ", error)
+         syndrome = comm(error, code)                      # Apply that error to your physical system and get syndrome
+         guess = get(lookup_table,syndrome,nothing)        # Decode the syndrome
+         if guess==error                                   # check if you were right
              decoded += 1
          end
      end
@@ -50,7 +46,7 @@ using QuantumClifford, QuantumClifford.ECC, CairoMakie
      return f
  end;
 
- function evaluate_degen_code_decoder(code::Stabilizer,lookup_table,p; samples=10_000)
+ function evaluate_degen_code_decoder(code::Stabilizer,lookup_table,p; samples=1)
      constraints, qubits = size(code)
      full_tableau = MixedDestabilizer(code)
      logicals = vcat(logicalxview(full_tableau),logicalzview(full_tableau))
@@ -58,11 +54,14 @@ using QuantumClifford, QuantumClifford.ECC, CairoMakie
      for sample in 1:samples
          # Generate random error
          error = random_pauli(qubits,p/3,nophase=true)
+         println("Error: ", error)
          # Apply that error to your physical system
          # and get syndrome
          syndrome = comm(error, code)
+        #  println("Syndrome: ", syndrome)
          # Decode the syndrome
          guess = get(lookup_table,syndrome,nothing)
+        #  println("Guess: ", guess)
          # Check if the suggested error correction
          # corrects the error or if it is equivalent
          # to a logical operation
@@ -70,7 +69,7 @@ using QuantumClifford, QuantumClifford.ECC, CairoMakie
              decoded += 1
          end
      end
-     1 - decoded / samples
+     return 1 - (decoded / samples)
  end;
 
 end

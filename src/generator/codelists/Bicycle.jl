@@ -15,10 +15,18 @@ code = Dict(
         # X___XX__X_XX__
         # _X___XX__X_XX_",
 
-        "codestring"=>"XX_XX_X
-        X__XXX_
-        ZZ_ZZ_Z
-        Z__ZZZ_"
+        # "codestring"=>"XX_XX_
+        # X__XXX
+        # ZZ_ZZ_
+        # Z__ZZZ"
+
+
+        "codestring"=>"_XX_XX__
+        __XX_XX_
+        X__X__XX
+        _ZZ_ZZ__
+        __ZZ_ZZ_
+        Z__Z__ZZ"
     ),
     "benchmark" => Dict(
         "error_rates"=>(-5:0.1:-1.0),

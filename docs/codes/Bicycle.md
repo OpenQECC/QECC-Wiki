@@ -7,12 +7,15 @@
 
 ## Example
 Code Tableau:
-XX_XX_X
-X__XXX_
-ZZ_ZZ_Z
-Z__ZZZ_
-- Number of qubits: N = 7
-- Number of encoded bits: k = 3
+_XX_XX__
+__XX_XX_
+X__X__XX
+_ZZ_ZZ__
+__ZZ_ZZ_
+Z__Z__ZZ
+- Number of qubits: N = 8
+- Number of encoded bits: k = 2
+- The Bicycle code is degenerate!
 ### Syndrome Circuit:
 ![Bicycle Syndrome Circuit](images/codeplots/Bicycle-codeplot.png)
 
@@ -20,13 +23,17 @@ Z__ZZZ_
 
 This code was tested with the following decoders:
 
-**Lookup table:** Ran in 1.075s
+**Lookup table:** Ran in 8.36s
 
 ![Bicycle Truth Table PP](images\performanceplots\Bicycle-lookuptable.png)
 
-**Belief decoder:** Ran in 4.17s
+**Belief decoder:** Ran in 27.8s
 
-![Bicycle Belief Decoder PP](images\performanceplots\Bicycle-belief.png)
+![Bicycle Belief Decoder X PP](images\performanceplots\Bicycle-beliefx.png)
+
+**Belief decoder:** Ran in 27.8s
+
+![Bicycle Belief Decoder Z PP](images\performanceplots\Bicycle-beliefz.png)
 
 ## 
 
