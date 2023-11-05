@@ -51,7 +51,7 @@ export compile
          stab = Stabilizer(tab)
          if code["replot"]
             # generate circuit img
-            circuit, anc, - = naive_syndrome_circuit(tab);
+            circuit, anc, - = shor_syndrome_circuit(tab);
 
             # save img
             image_dir = string(@__DIR__, "\\..\\..\\..\\docs\\codes\\images\\codeplots\\$CODE_NAME-codeplot.png")
@@ -133,12 +133,12 @@ export compile
      return join(result, "\n")
  end # For future: link to interactive generator page
 
- function QASMdownload()
+ function QASMdownload() #! NOTE, we are having encoding and syndromes circuits appeneded to each other
     result = ["## QASM Downloads"]
     # generate QASM file
     save_dir = string(@__DIR__, "\\..\\..\\..\\docs\\codes\\QASMDownloads\\")
-    generate_openQasm_file(code["example"]["codestring"], save_dir*CODE_NAME*"-encodingCircuit.qasm")
-    push!(result, "[QASM Encoding Circuit](QASMDownloads\\"*CODE_NAME*"-encodingCircuit.qasm)")
+    generate_openQasm_file(code["example"]["codestring"], save_dir*CODE_NAME*"-encodingSysdromeCircuit.qasm")
+    push!(result, "[QASM Encoding Circuit](QASMDownloads\\"*CODE_NAME*"-encodingSysdromeCircuit.qasm)")
     return join(result, "\n")
  end
 
