@@ -1,5 +1,0 @@
-set GIT_USER=dmtrung14
-set GIT_PASS=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
-cmd /C "set GIT_USER=dmtrung14&& yarn deploy"
-
-docker run -it --env-file=.env -e "CONFIG=(cat ./config.json)" algolia/docsearch-scraper
