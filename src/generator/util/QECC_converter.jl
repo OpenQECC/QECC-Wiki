@@ -1,4 +1,4 @@
-module converter
+module QECC_Converter
 
 export binaryToStabilizer, stabilizerStringToTableau, generate_openQasm_file
 
