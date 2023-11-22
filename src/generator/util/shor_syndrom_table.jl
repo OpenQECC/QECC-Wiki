@@ -198,30 +198,3 @@ module Shor_Syndrom_Eval
  # f_x_Perfect5, f_z_Perfect5 = pf_encoding_plot(Perfect5())
 
 end
-
-
-
-"""Table decoder code"""
-using QuantumClifford
-using Combinatorics: combinations
-
-
-
-
- function create_lookup_table_3_errors(H)
-    lookup_table_three = Dict()
-    constraints, bits = size(H)
-    for num_errors in 1:3  # Looping for 1 to 3 errors
-       for error_positions in combinations(1:bits, num_errors)         
-          error = zeros(Int, bits)
-          for pos in error_positions
-            error[pos] = 1
-          end
-          syndrome = (H * error) .% 2
-          lookup_table_three[syndrome] = error
-       end
-    end
-    lookup_table_three[zeros(Int, constraints)] = zeros(Int, bits)
-    return lookup_table_three
- end
-end
