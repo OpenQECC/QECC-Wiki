@@ -168,7 +168,7 @@ module Shor_Syndrom_Eval
      ss_encoding_plot(checks, name)
  end
  function ss_encoding_plot(checks, error_rates, name="")
-     (scirc, _), time1, _ = @timed shor_syndrome_circuit(checks)
+     (cat, scirc, _), time1, _ = @timed shor_syndrome_circuit(checks)
      ecirc, time2, _ = @timed naive_encoding_circuit(checks)
     #  a = @timed naive_encoding_circuit(checks)
     #  println(a)
@@ -176,7 +176,7 @@ module Shor_Syndrom_Eval
     #  println(time2)
 
     #  error_rates = 0.025:0.0025:0.2
-     post_ec_error_rates, time3, _ = @timed [evaluate_code_decoder_shor_syndrome(checks, ecirc, scirc, p) for p in error_rates]
+     post_ec_error_rates, time3, _ = @timed [evaluate_code_decoder_shor_syndrome(checks, cat, ecirc, scirc, p) for p in error_rates]
     #  println(time3)
      
      total_time = round(time1 + time2 + time3, sigdigits=4)
