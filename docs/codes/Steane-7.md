@@ -22,19 +22,17 @@ Z_Z_Z_Z
 
 This code was tested with the following decoders:
 
-**Lookup table:** Ran in 0.0711s
+###: tableDecode and QuantumClifford.AbstractOperation[sCNOT(7,4), sCNOT(7,5), sHadamard(1), sZCX(1,4), sZCX(1,5), sZCX(1,6), sHadamard(2), sZCX(2,4), sZCX(2,6), sZCX(2,7), sHadamard(3), sZCX(3,5), sZCX(3,6), sZCX(3,7), sSWAP(7,6), sSWAP(4,3)] and QuantumClifford.AbstractOperation[sXCX(4,8), sXCX(5,8), sXCX(6,8), sXCX(7,8), sMRZ(8, 1), sXCX(2,9), sXCX(3,9), sXCX(6,9), sXCX(7,9), sMRZ(9, 2), sXCX(1,10), sXCX(3,10), sXCX(5,10), sXCX(7,10), sMRZ(10, 3), sCNOT(4,11), sCNOT(5,11), sCNOT(6,11), sCNOT(7,11), sMRZ(11, 4), sCNOT(2,12), sCNOT(3,12), sCNOT(6,12), sCNOT(7,12), sMRZ(12, 5), sCNOT(1,13), sCNOT(3,13), sCNOT(5,13), sCNOT(7,13), sMRZ(13, 6)]
 
-![Steane-7 Truth Table PP](images\performanceplots\Steane-7-lookuptable.png)
+![Steane-7 tableDecode PP](images\performanceplots\Steane-7-tableDecode.png)
 
-**Belief decoder:** Ran in 18.32s
+###: beliefDecodeX and QuantumClifford.AbstractOperation[sCNOT(7,4), sCNOT(7,5), sHadamard(1), sZCX(1,4), sZCX(1,5), sZCX(1,6), sHadamard(2), sZCX(2,4), sZCX(2,6), sZCX(2,7), sHadamard(3), sZCX(3,5), sZCX(3,6), sZCX(3,7), sSWAP(7,6), sSWAP(4,3)] and QuantumClifford.AbstractOperation[sXCX(4,8), sXCX(5,8), sXCX(6,8), sXCX(7,8), sMRZ(8, 1), sXCX(2,9), sXCX(3,9), sXCX(6,9), sXCX(7,9), sMRZ(9, 2), sXCX(1,10), sXCX(3,10), sXCX(5,10), sXCX(7,10), sMRZ(10, 3), sCNOT(4,11), sCNOT(5,11), sCNOT(6,11), sCNOT(7,11), sMRZ(11, 4), sCNOT(2,12), sCNOT(3,12), sCNOT(6,12), sCNOT(7,12), sMRZ(12, 5), sCNOT(1,13), sCNOT(3,13), sCNOT(5,13), sCNOT(7,13), sMRZ(13, 6)]
 
-![Steane-7 Belief Decoder X PP](images\performanceplots\Steane-7-beliefx.png)
+![Steane-7 beliefDecodeX PP](images\performanceplots\Steane-7-beliefDecodeX.png)
 
-**Belief decoder:** Ran in 18.32s
+###: beliefDecodeZ and QuantumClifford.AbstractOperation[sCNOT(7,4), sCNOT(7,5), sHadamard(1), sZCX(1,4), sZCX(1,5), sZCX(1,6), sHadamard(2), sZCX(2,4), sZCX(2,6), sZCX(2,7), sHadamard(3), sZCX(3,5), sZCX(3,6), sZCX(3,7), sSWAP(7,6), sSWAP(4,3)] and QuantumClifford.AbstractOperation[sXCX(4,8), sXCX(5,8), sXCX(6,8), sXCX(7,8), sMRZ(8, 1), sXCX(2,9), sXCX(3,9), sXCX(6,9), sXCX(7,9), sMRZ(9, 2), sXCX(1,10), sXCX(3,10), sXCX(5,10), sXCX(7,10), sMRZ(10, 3), sCNOT(4,11), sCNOT(5,11), sCNOT(6,11), sCNOT(7,11), sMRZ(11, 4), sCNOT(2,12), sCNOT(3,12), sCNOT(6,12), sCNOT(7,12), sMRZ(12, 5), sCNOT(1,13), sCNOT(3,13), sCNOT(5,13), sCNOT(7,13), sMRZ(13, 6)]
 
-![Steane-7 Belief Decoder Z PP](images\performanceplots\Steane-7-beliefz.png)
-
-## 
+![Steane-7 beliefDecodeZ PP](images\performanceplots\Steane-7-beliefDecodeZ.png)
 
 ## ## QASM Downloads
 [QASM Encoding Circuit](QASMDownloads\Steane-7-encodingCircuit.qasm)
