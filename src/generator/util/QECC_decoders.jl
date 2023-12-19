@@ -1,9 +1,350 @@
 module QECC_Decoders
 
-export create_lookup_table, is_degenerate, create_lookup_table_3_errors, tableDecode, beliefDecodeX, beliefDecodeZ
+export create_lookup_table, is_degenerate, create_lookup_table_3_errors, table_decode, belief_decode_X, belief_decode_Z, TableDecoder, BeliefPropDecoder
 
 using QuantumClifford, QuantumClifford.ECC, CairoMakie, SparseArrays, LDPCDecoders
 using Combinatorics: combinations
+
+# stefan
+function evaluate_decoder(c::CSS, nsamples, init_error, gate_error, encoding_circuit_func, syndrome_circuit_func)
+    Z_decoded = 0
+    X_decoded = 0
+
+    # create objects
+    # run classical syndrome decoders
+
+
+    Hx = c.Hx
+    Hz = c.Hz
+
+    Hx_stab = Stabilizer(fill(0x0, size(Hx, 2)), Hx, zeros(Int8, size(Hx)))
+    Hz_stab = Stabilizer(fill(0x0, size(Hz, 2)), zeros(Int8, size(Hz)), Hz)
+
+    X_syndrome_circuit = syndrome_circuit_func(Hx_stab)
+    Z_syndrome_circuit = syndrome_circuit_func(Hz_stab)
+
+    n = code_n(c)
+    s = code_m(c)
+    k = code_k(c)
+
+    errors = [PauliError(i,transmission_error) for i in 1:n];
+
+    md = MixedDestabilizer(checks)
+
+    # Z logic circuit
+    logview_Z = logicalzview(md)
+    logcirc_Z, numLogBits_Z, _ = syndrome_circuit_func(logview_Z)
+
+    noisy_circuit_Z = add_two_qubit_gate_noise(circuit_Z, gate_error);
+
+    for gate in logcirc_Z
+        type = typeof(gate)
+        if type == sMRZ
+            push!(noisy_circuit_Z, sMRZ(gate.qubit+s, gate.bit+s))
+        else
+            push!(noisy_circuit_Z, type(gate.q1, gate.q2+s))
+        end
+    end
+
+    Z_ecirc = fault_tolerant_encoding(circuit_Z)
+    fullcircuit_Z = vcat(Z_ecirc, errors, noisy_circuit_Z)
+
+    Z_frames = PauliFrame(nsamples, n+s+k, s+k)
+    pftrajectories(Z_frames, fullcircuit_Z)
+    Z_syndromes = pfmeasurements(Z_frames)[:, 1:s]
+    Z_logicalSyndromes = pfmeasurements(Z_frames)[:, s+1: s+k]
+
+   # X logic circuit
+   pre_X = [sHadamard(i) for i in n-k+1:n]
+
+   logview_X = logicalxview(md)
+   logcirc_X, numLogBits_X, _ = syndrome_circuit_func(logview_X)
+
+   noisy_circuit_X = add_two_qubit_gate_noise(circuit_X, gate_error);
+   
+    for gate in logcirc_X
+        type = typeof(gate)
+        if type == sMRZ
+            push!(circuit_X, sMRZ(gate.qubit+s, gate.bit+s))
+        else
+            push!(circuit_X, type(gate.q1, gate.q2+s))
+        end
+    end
+
+    X_ecirc = fault_tolerant_encoding(circuit_X)
+    fullcircuit_X = vcat(pre_X, X_ecirc, errors, circuit_X)
+
+    X_frames = PauliFrame(nframes, n+s+k, s+k)
+    pftrajectories(X_frames, fullcircuit_X)
+    X_syndromes = pfmeasurements(X_frames)[:, 1:s]
+    X_logicalSyndromes = pfmeasurements(X_frames)[:, s+1: s+k]
+
+
+    for i in 1:nsamples
+        X_guess = decode(decoder_obj, X_syndromes[i])
+        Z_guess = decode(decoder_obj, Z_syndromes[i])
+
+        X_result = (O * (X_guess))[1:k]
+        Z_result = (O * (Z_guess))[k+1:2k]
+        
+        if X_result == X_logicalSyndromes[i]
+            X_decoded += 1
+        end
+        if X_result == Z_logicalSyndromes[i]
+            Z_decoded += 1
+        end
+    end
+
+    X_error = (nsamples - X_decoded) / nsamples
+    Z_error = (nsamples - Z_decoded) / nsamples
+
+    return (X_error, Z_error)
+end
+
+function evaluate_classical_decoder(H, nsamples, init_error, gate_error, syndrome_circuit_func, encoding_circuit_func, pre_circuit = nothing)
+    decoded = 0
+
+    H_stab = Stabilizer(fill(0x0, size(Hx, 2)), H, zeros(Bool, size(H)))
+
+    O = faults_matrix(H_stab)
+    syndrome_circuit = syndrome_circuit_func(H_stab)
+    
+    s, n = size(H)
+    k = n - s
+
+    errors = [PauliError(i, init_error) for i in 1:n];
+
+    md = MixedDestabilizer(H_stab)
+    
+    full_circuit = []
+
+    logview = logicalxview(md)
+    logcirc, _ = syndrome_circuit_func(logviews)
+
+    noisy_syndrome_circuit = add_two_qubit_gate_noise(syndrome_circuit, gate_error);
+    
+    for gate in logcirc
+        type = typeof(gate)
+        if type == sMRZ
+            push!(circuit, sMRZ(gate.qubit+s, gate.bit+s))
+        else
+            push!(circuit, type(gate.q1, gate.q2+s))
+        end
+    end
+
+    ecirc = encoding_circuit_func(syndrome_circuit)
+    if isnothing(pre_circuit)
+        full_circuit = vcat(pre_circuits, ecirc, errors, noisy_syndrome_circuit)
+    else
+        full_circuit = vcat(ecirc, errors, noisy_syndrome_circuit)
+    end
+
+    frames = PauliFrame(nframes, n+s+k, s+k)
+    pftrajectories(frames, full_circuit)
+    syndromes = pfmeasurements(frames)[:, 1:s]
+    logical_syndromes = pfmeasurements(frames)[:, s+1: s+k]
+
+    for i in 1:nsamples
+        guess = decode(decoder_obj, syndromes[i])
+
+        result = (O * (guess))
+        
+        if result == logical_syndromes[i]
+            decoded += 1
+        end
+    end
+
+    return (nsamples - decoded) / nsamples
+end
+
+function evaluate_classical_decoder(d::AbstractClassicalSyndromeDecoder, nsamples, init_error, gate_error, syndrome_circuit_func, encoding_circuit_func, guess_start, guess_stop, pre_circuit = nothing)
+    H = d.H
+    O = d.faults_matrix
+    syndrome_circuit = syndrome_circuit_func(H)
+
+    n = d.n
+    s = d.s
+    k = d.k
+
+    errors = [PauliError(i, init_error) for i in 1:n];
+
+    md = MixedDestabilizer(H)
+    
+    full_circuit = []
+
+    logview = logicalxview(md)
+    logcirc, _ = syndrome_circuit_func(logview)
+
+    noisy_syndrome_circuit = add_two_qubit_gate_noise(syndrome_circuit, gate_error);
+    
+    for gate in logcirc
+        type = typeof(gate)
+        if type == sMRZ
+            push!(syndrome_circuit, sMRZ(gate.qubit+s, gate.bit+s))
+        else
+            push!(syndrome_circuit, type(gate.q1, gate.q2+s))
+        end
+    end
+
+    ecirc = encoding_circuit_func(syndrome_circuit)
+    if isnothing(pre_circuit)
+        full_circuit = vcat(pre_circuits, ecirc, errors, noisy_syndrome_circuit)
+    else
+        full_circuit = vcat(ecirc, errors, noisy_syndrome_circuit)
+    end
+
+    frames = PauliFrame(nframes, n+s+k, s+k)
+    pftrajectories(frames, full_circuit)
+    syndromes = pfmeasurements(frames)[:, 1:s]
+    logical_syndromes = pfmeasurements(frames)[:, s+1: s+k]
+
+    for i in 1:nsamples
+        guess = decode(decoder_obj, syndromes[i])
+
+        result = (O * (guess))[guess_start:guess_stop]
+        
+        if result == logical_syndromes[i]
+            decoded += 1
+        end
+    end
+
+    return (nsamples - decoded) / nsamples
+end
+
+
+# function evaluate_classical_decoder(decoder_obj, nsamples, syndrome_samples, logical_samples)
+#     decoded = 0
+#     for i in 1:nsamples
+#         guess = decode(decoder_obj, syndrome_samples[i])
+
+#     end
+#     return (nsamples - decoded) / nsamples
+# end
+
+abstract type AbstractClassicalSyndromeDecoder end # quantum version contains 2 of these
+
+abstract type AbstractSyndromeDecoder end
+
+"""
+```,.
+decoder_instance = BeliefPropDecoder(some_properties, more_pros, something_else)
+
+#option 1:
+guess = decoder_instance(syndrome_sample) # equivalent of decoder() in gen_benchmark()
+
+#option 2:
+guess = decode(decoder_instance, syndrome_sample)
+
+```
+"""
+
+struct TableDecoder <: AbstractSyndromeDecoder
+    H
+    faults_matrix
+    n
+    s
+    r
+    k
+    lookup_table
+    time 
+end
+
+function TableDecoder(Hx, Hz)
+    c = CSS(Hx, Hz)
+    H = parity_checks(c)
+    s, n = size(H)
+    _, _, r = canonicalize!(Base.copy(H), ranks=true)
+    k = n - r
+    lookup_table, time, _ = @timed create_lookup_table(H)
+    faults_matrix = faults_matrix(H)
+    return TableDecoder(H, n, s, r, k, faults_matrix, lookup_table, time)
+end
+
+struct BeliefPropDecoder <: AbstractSyndromeDecoder
+    H
+    faults_matrix
+    n
+    s
+    r
+    k
+    log_probabs
+    channel_probs
+    numchecks_X
+    b2c_X
+    c2b_X
+    numchecks_Z
+    b2c_Z
+    c2b_Z
+    err
+end
+
+function faults_matrix(c)
+    md = MixedDestabilizer(c)
+    s, n = size(c)
+    r = rank(md)
+    k = n - r
+    k == n-s || @warn "`faults_matrix` was called on an ECC that has redundant rows (is rank-deficient). `faults_matrix` corrected for that, however this is a frequent source of mistakes and inefficiencies. We advise you remove redundant rows from your ECC."
+    O = falses(2k, 2n)
+    logviews = [logicalxview(md); logicalzview(md)]
+    errors = [one(Stabilizer,n; basis=:X);one(Stabilizer,n)]
+    for i in 1:2k
+        O[i, :] = comm(logviews[i]::PauliOperator, errors) # typeassert for JET
+    end
+    return O
+end
+
+function BeliefPropDecoder(H)
+    c = CSS(Hx, Hz)
+    H = parity_checks(c)
+    s, n = size(H)
+    _, _, r = canonicalize!(Base.copy(H), ranks=true)
+    k = n - r
+    println(typeof(H))
+    faults_matrix = faults_matrix(H)
+    log_probabs = zeros(n)
+    channel_probs = fill(p_init, n)
+
+    numchecks_X = size(Cx)[1]
+    b2c_X = zeros(numchecks_X, n)
+    c2b_X = zeros(numchecks_X, n)
+
+    numchecks_Z = size(Cz)[1]
+    b2c_Z = zeros(numchecks_Z, n)
+    c2b_Z = zeros(numchecks_Z, n)
+    err = zeros(n)
+    return BeliefPropDecoder(H, faults_matrix, n, s, r, k, log_probabs, channel_probs, numchecks_X, b2c_X, c2b_X, numchecks_Z, b2c_Z, c2b_Z, err)
+end
+
+# option 1
+
+# function (d::BeliefPropDecoder)(syndrome_sample)
+#     d.H
+#     syndrome_sample
+# end
+
+# function (d::TableDecoder)(syndrome_sample)
+#     d.H
+#     d.lookup_table
+#     syndrome_sample
+# end
+
+# option 2
+function decode end
+
+function decode(d::TableDecoder, syndrome_sample)
+    return get(d.lookup_table, syndrome_sample, nothing)
+end
+
+function decode(d::BeliefPropDecoder, syndrome_sample)
+    row_x = syndrome_sample[1:d.numchecks_X]
+    row_z = syndrome_sample[d.numchecks_X+1:d.numchecks_X+d.numchecks_Z]
+
+    KguessX, success = syndrome_decode(sparse(d.Cx), sparse(d.Cx'), d.row_x, d.max_iters, d.channel_probs, d.b2c_X, d.c2b_X, d.log_probabs, Base.copy(d.err))
+    KguessZ, success = syndrome_decode(sparse(d.Cz), sparse(d.Cz'), d.row_z, d.max_iters, d.channel_probs, d.b2c_Z, d.c2b_Z, d.log_probabs, Base.copy(d.err))
+    guess = vcat(KguessZ, KguessX)
+end
+
+#
 
  function create_lookup_table(H)
     lookup_table = Dict()
@@ -47,7 +388,7 @@ using Combinatorics: combinations
     lookup_table_three = Dict()
     constraints, bits = size(H)
     for num_errors in 1:3  # Looping for 1 to 3 errors
-       for error_positions in combinations(1:bits, num_errors)         
+       for error_positions in combinations(1:bits, num_errors)
           error = zeros(Int, bits)
           for pos in error_positions
             error[pos] = 1
@@ -68,7 +409,7 @@ using Combinatorics: combinations
    end
  end
 
- function tableDecode(stab, error_rates, name = "", varargs...)
+ function table_decode(stab, error_rates, name = "", varargs...)
    lookup_table, lt_time1, _ = @timed create_lookup_table(stab)
    post_ec_error_rates = []
    lt_time2 = 0
@@ -81,19 +422,19 @@ using Combinatorics: combinations
    return plot_code_performance(error_rates, post_ec_error_rates, title="Lookup table: $name @$lt_time"*"s")
  end
 
- function beliefDecodeX(stab, error_rates, name = "", varargs...)
+ function belief_decode_X(stab, error_rates, name = "", varargs...)
    ecirc = varargs[1]
    scirc = varargs[2]
-   post_ec_error_rates, time, _ = @timed [beliefDecoderEvalX(stab, ecirc, scirc, p) for p in error_rates]
+   post_ec_error_rates, time, _ = @timed [belief_decoder_eval_X(stab, ecirc, scirc, p) for p in error_rates]
    time = round(time, sigdigits=4)
    f_x = plot_code_performance(error_rates, post_ec_error_rates, title="Belief Decoder X: $name @$time"*"s")
    return f_x
  end
 
- function beliefDecodeZ(stab, error_rates, name = "", varargs...)
+ function belief_decode_Z(stab, error_rates, name = "", varargs...)
    ecirc = varargs[1]
    scirc = varargs[2]
-   post_ec_error_rates, time, _ = @timed [beliefDecoderEvalZ(stab, ecirc, scirc, p) for p in error_rates]
+   post_ec_error_rates, time, _ = @timed [belief_decoder_eval_Z(stab, ecirc, scirc, p) for p in error_rates]
    time = round(time, sigdigits=4)
    f_z = plot_code_performance(error_rates, post_ec_error_rates, title="Belief Decoder Z: $name @$time"*"s")
    return f_z
@@ -136,18 +477,19 @@ function evaluate_code_decoder(code::Stabilizer,lookup_table,p; samples=100_000)
            decoded += 1
        end
    end
-   return 1 - (decoded / samples) 
+   return 1 - (decoded / samples)
 end;
 
-function plot_code_performance(error_rates, post_ec_error_rates; title="")
+function plot_code_performance(error_rates, post_ec_error_rates; samples = 100_000, title="")
    f = Figure(resolution=(500,300))
+   resolution = 1 / samples
    ax = f[1,1] = Axis(f, xlabel="single (qu)bit error rate", ylabel="Logical error rate", xscale = log10, yscale = log10, title=title)
    ax.aspect = DataAspect()
    lim = max(error_rates[end],post_ec_error_rates[end])
-   lines!([0.00001,lim], [0.00001,lim], label="single bit", color=:black)
+   lines!([resolution,lim], [resolution,lim], label="single bit", color=:black)
    plot!(error_rates, post_ec_error_rates, label="after decoding", color=:black)
-   xlims!(0.00001, lim)
-   ylims!(0.00001, lim)
+   xlims!(resolution, lim)
+   ylims!(resolution, lim)
    f[1,2] = Legend(f, ax, "Error Rates")
    return f
 end;
@@ -175,7 +517,7 @@ function evaluate_degen_code_decoder(code::Stabilizer,lookup_table,p; samples=10
    return 1 - (decoded / samples)
 end;
 
-function beliefDecoderEvalX(checks::Stabilizer, ecirc, scirc, p_error; nframes=100_000, encoding_locs=nothing)
+function belief_decoder_eval_X(checks::Stabilizer, ecirc, scirc, p_error; nframes=100_000, encoding_locs=nothing)
    s, n = size(checks)
    k = n-s
 
@@ -191,18 +533,18 @@ function beliefDecoderEvalX(checks::Stabilizer, ecirc, scirc, p_error; nframes=1
        pre_X = [sHadamard(i) for i in n-k+1:n]
    else
        pre_X = [sHadamard(i) for i in encoding_locs]
-   end     
+   end
 
    md = MixedDestabilizer(checks)
    logview_X = [ logicalxview(md);]
    logcirc_X, _ = naive_syndrome_circuit(logview_X)
-   
+
   # X logic circuit
    for gate in logcirc_X
        type = typeof(gate)
        if type == sMRZ
            push!(circuit_X, sMRZ(gate.qubit+s, gate.bit+s))
-       else 
+       else
            push!(circuit_X, type(gate.q1, gate.q2+s))
        end
    end
@@ -219,7 +561,7 @@ function beliefDecoderEvalX(checks::Stabilizer, ecirc, scirc, p_error; nframes=1
    decoded = 0
    for i in 1:nframes
        row = syndromes[i,:]
-       
+
        guess, success = syndrome_decode(sparse(pcm_X), sparse(pcm_X'), row[1:Int(s/2)], 50, fill(p_error, n), zeros(Int(s/2), n), zeros(Int(s/2), n), zeros(n), zeros(n))
 
        guess = vcat(convert(Vector{Bool}, guess), convert(Vector{Bool}, fill(0, n)))
@@ -238,7 +580,7 @@ function beliefDecoderEvalX(checks::Stabilizer, ecirc, scirc, p_error; nframes=1
    return x_error
 end
 
-function beliefDecoderEvalZ(checks::Stabilizer, ecirc, scirc, p_error; nframes=100_000, encoding_locs=nothing)
+function belief_decoder_eval_Z(checks::Stabilizer, ecirc, scirc, p_error; nframes=100_000, encoding_locs=nothing)
    s, n = size(checks)
    k = n-s
 
@@ -246,7 +588,7 @@ function beliefDecoderEvalZ(checks::Stabilizer, ecirc, scirc, p_error; nframes=1
    pcm_Z = pcm[Int(s/2) + 1:end, n + 1:end]
 
    O = faults_matrix(checks)
-   circuit_Z = Base.copy(scirc) 
+   circuit_Z = Base.copy(scirc)
 
    md = MixedDestabilizer(checks)
    logview_Z = [ logicalzview(md);]
@@ -257,7 +599,7 @@ function beliefDecoderEvalZ(checks::Stabilizer, ecirc, scirc, p_error; nframes=1
        type = typeof(gate)
        if type == sMRZ
            push!(circuit_Z, sMRZ(gate.qubit+s, gate.bit+s))
-       else 
+       else
            push!(circuit_Z, type(gate.q1, gate.q2+s))
        end
    end
@@ -270,7 +612,7 @@ function beliefDecoderEvalZ(checks::Stabilizer, ecirc, scirc, p_error; nframes=1
    frames = PauliFrame(nframes, n+s+k, s+k)
    pftrajectories(frames, fullcircuit_Z)
    syndromes = pfmeasurements(frames)[:, 1:s]
-   logicalSyndromes = pfmeasurements(frames)[:, s+1: s+k] 
+   logicalSyndromes = pfmeasurements(frames)[:, s+1: s+k]
 
    decoded = 0
    for i in 1:nframes
@@ -294,6 +636,27 @@ function beliefDecoderEvalZ(checks::Stabilizer, ecirc, scirc, p_error; nframes=1
    z_error = 1 - decoded / nframes
 
    return z_error
+end
+
+"""Takes a circuit and adds a pf noise op after each two qubit gate, correspond to the provided fidelity"""
+function add_two_qubit_gate_noise(circuit, p_error, noise_func = None)
+    new_circuit = []
+    for gate in circuit
+        if isa(gate, QuantumClifford.AbstractTwoQubitOperator)
+            if noise_func == None
+                push!(new_circuit, gate)
+                push!(new_circuit, PauliError(gate.q1, p_error))
+                push!(new_circuit, PauliError(gate.q2, p_error))
+            else
+                push!(new_circuit, gate)
+                push!(new_circuit, noise_func(gate.q1, p_error))
+                push!(new_circuit, noise_func(gate.q2, p_error))
+            end
+        else
+            push!(new_circuit, gate)
+        end
+    end
+    return new_circuit
 end
 
 end

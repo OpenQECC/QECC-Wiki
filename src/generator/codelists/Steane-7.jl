@@ -1,5 +1,6 @@
 # Stean-7 code
 
+# change to code_steane7
 code = Dict(
     "name"=>"Steane-7",
     "description" => [
@@ -16,16 +17,18 @@ code = Dict(
         # _X_X__X_
         # __X__X_X"
 
+        # Change dict entries to Symbols (e.x.: :codestring )
         "codestring"=>"___XXXX
         _XX__XX
         X_X_X_X
         ___ZZZZ
         _ZZ__ZZ
         Z_Z_Z_Z"
-        
+
     ),
     "benchmark" => Dict(
         "error_rates"=>(-5:0.1:-1.0),
+        "logical_error_rates"=>(-3:0.1:-3)
     ),
     "similar" => [
         Dict(
@@ -43,9 +46,7 @@ code = Dict(
         ),
 
     ],
-
-    "simulation"=>"", # link to simulation
     "replot" => true, # set to false if regenrating plot is unnecessary in the next run
-
-
 )
+
+codemetadata(::Type{Steane7}) = code_steane7
