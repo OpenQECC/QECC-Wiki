@@ -1,10 +1,11 @@
 module QECC_Converter
 
-export binaryToStabilizer, stabilizerStringToTableau, generate_openQasm_file
+export binaryToStabilizer, stabilizerStringToTableau, gen_openQASM_file, evaluate_rates, plot_code_performance
 
  using QuantumClifford
- using QuantumClifford: Tableau
- using QuantumClifford.ECC
+ using QuantumClifford: Tableau, AbstractOperation
+ using QuantumClifford.ECC: AbstractSyndromeDecoder, evaluate_decoder, naive_encoding_circuit, code_n, code_s
+ using CairoMakie
  
  function binaryToStabilizer(file_path::String)::String
      file = open(file_path, "r")
@@ -43,23 +44,17 @@ export binaryToStabilizer, stabilizerStringToTableau, generate_openQasm_file
      return stab_str
  end
  
- function generate_openQasm_file(stabilizer_str::String, file_path::String)
-    tab = stabilizerStringToTableau(stabilizer_str)
-    stab = Stabilizer(tab)
-    ccir = naive_encoding_circuit(stab)
-
-    num_ancila = size(tab)[1]
-    num_qubits = size(tab)[2]
+ function gen_openQASM_file(circ, n::Int, s::Int, file_path::String)
 
     qasm_code = """
     OPENQASM 2.0;
     include "qelib1.inc";
 
-    qreg q[$num_qubits];
-    creg c[$num_ancila];
+    qreg q[$n];
+    creg c[$s];
     """
 
-    for elem in ccir
+    for elem in circ
         # println(typeof(elem))
         if typeof(elem) == sHadamard
             q1 = elem.q-1
@@ -142,5 +137,34 @@ end
 #  YYYY"
 #  tableau_obj = stabilizerStringToTableau(stabilizer_str)
 #  println(tableau_obj)
+
+
+function evaluate_rates(d::AbstractSyndromeDecoder, setup, error_rates, nsamples::Int)
+    x_list = []
+    z_list = []
+    for p in error_rates
+        ecc_setup = getfield(Main, setup)(p, 0)
+        x_err, z_err = evaluate_decoder(d, ecc_setup, nsamples)
+        push!(x_list, x_err)
+        push!(z_list, z_err)
+    end
+    return x_list, z_list
+end
+
+function plot_code_performance(error_rates, x_corrected_rates, z_corrected_rates; title="")
+    f = Figure(resolution=(500,300))
+    ax = f[1,1] = Axis(f, xlabel="single (qu)bit error rate", ylabel="Logical error rate", xscale = log10, yscale = log10, title=title)
+    ax.aspect = DataAspect()
+    min_lim = error_rates[1]
+    max_lim = max(error_rates[end], x_corrected_rates[end], z_corrected_rates[end])
+    lines!([min_lim, max_lim], [min_lim, max_lim], label="Single bit", color=:black)
+    plot!(error_rates, x_corrected_rates, label="X corrected", color=:blue)
+    plot!(error_rates, z_corrected_rates, label="Z corrected", color=:red)
+    xlims!(min_lim, max_lim)
+    ylims!(min_lim, max_lim)
+    f[1,2] = Legend(f, ax, "Error Rates")
+    return f
+end;
+ 
 
 end

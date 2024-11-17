@@ -81,7 +81,6 @@ const config = {
             sidebarId: 'api', // foldername
             label: 'Codes',     // navbar title
           },
-          {to: 'blog', label: 'Blog', position: 'left'},
           // Please keep GitHub link to the right for consistency.
           {
             href: 'https://github.com/Benzillaist/QECC-Wiki',
@@ -99,10 +98,6 @@ const config = {
               {
                 label: 'Get Started',
                 to: '/',
-              },
-              {
-                label: 'Style Guide',
-                to: 'welcome/Add%20new%20code/create-a-page',
               },
             ],
           },

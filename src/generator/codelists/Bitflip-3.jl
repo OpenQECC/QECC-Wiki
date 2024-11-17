@@ -1,12 +1,12 @@
 # Steane-7 code
 
-function code_data(c::Example)
+function code_data(c::Bitflip3)
     return Dict(
-        "name"=>"Example",
+        "name"=>"Bitflip-3",
         "code"=>c,
         "description" => [
-            "Description 1.",
-            "Description 2."
+            "The simplest error correcting code that can correct a single bit-flip error.",
+            "Unable to correct phase errors.",
         ],
         "parity_checks" => Dict(
             "stab"=>parity_checks(c),
@@ -15,7 +15,7 @@ function code_data(c::Example)
             "code_k"=>code_k(c),
         ),
         "benchmark" => Dict(
-            "decoders"=>[:TableDecoder, :BeliefPropDecoder],
+            "decoders"=>[:TableDecoder],
             "setups"=>[:NaiveSyndromeECCSetup],
             "error_rates"=>(-5:0.1:-1.0),
             "nsamples"=>100_000,
@@ -29,10 +29,9 @@ function code_data(c::Example)
         ],
         "citation" => [
             Dict(
-                "author" => "Joe Smith",
-                "link" => "10.1098/rspa.1996.0136",
+                "doi" => "https://en.wikipedia.org/wiki/Repetition_code",
                 "journal" => "Wikipedia",
-                "title" => "Helmsdale",
+                "title" => "Repetition code",
             ),
 
         ],

@@ -5,7 +5,7 @@ slug: /
 
 # Welcome
 
-Welcome to QECC-Wiki. Here is a **5 minutes primer** to the website
+Welcome to QECC-Wiki. Here is a **2 minute primer** to the website
 
 ## Introduction
 
@@ -15,9 +15,9 @@ Visit the `Code` tab to a multitude of empirical and pedagogical codes frequentl
 
 We aim to provide not only the description and detailed operations for most of the codes, but also performance benchmarking results between different codes. There will also be playgrounds and QASM codes for implementation on IBM Quiskit and other frameworks.
 
-## Contributing
+<!-- ## Contributing
 
-Please visit the `Add new code` tab to learn more about how you can contribute to our open source project.
+Please visit the `Add new code` tab to learn more about how you can contribute to our open source project. -->
 
 ## About the team
 
